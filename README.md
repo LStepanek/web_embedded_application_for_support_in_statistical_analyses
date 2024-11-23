@@ -5,3 +5,5 @@ This repository hosts a web-embedded application for supporting statistical anal
 EDIT (November 23, 2024):
 
 -- the project is worked out by Lubomir Stepanek and Michal Seda
+
+
