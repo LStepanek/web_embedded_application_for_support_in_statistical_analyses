@@ -149,15 +149,34 @@ my_ui <- shinyUI(
                                     target = "_blank"
                                 >
                                     XRPR1 Team project 1
+                                </a>
                             ',
                             '
                             <!-- visit counter -->
-                            
                             ',
                             '
                             <!-- logos of faculties and universities -->
+                            <span style = "float:right">
+                            <a
+                                href = "https://prf.osu.eu/"
+                                target = "_blank"
+                            >
+                                <img
+                                    src = "logo_univesity_of_ostrava.png",
+                                    style = "height: 30px;"
+                                >
+                            </a>
+                            <a
+                                href = "https://fis.vse.cz/english/"
+                                target = "_blank"
+                            >
+                                <img
+                                    src = "logo_faculty_of_informatics_and_statistics.png",
+                                    style = "height: 20px;"
+                                >
+                            </a>
+                            </span>
                             ',
-                            '</span>',
                             '
                             <!-- javascript functionalities in HTML -->
                             '
@@ -169,6 +188,7 @@ my_ui <- shinyUI(
                 
                 
                 # CSS bootstrap will be here
+                theme = "bootstrap.css",
                 
                 
                 ## the first tab ----------------------------------------------
