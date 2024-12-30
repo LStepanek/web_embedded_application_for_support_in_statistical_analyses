@@ -4,6 +4,4 @@ This repository hosts a web-embedded application for supporting statistical anal
 
 A developer version of the application is available at [https://statisticaltools.shinyapps.io/statistical_tools_test/](https://statisticaltools.shinyapps.io/statistical_tools_test/).
 
-`EDIT (November 23, 2024):
-
--- the project is worked out by Lubomir Stepanek and Michal Seda`
+`EDIT (November 23, 2024): -- the project is worked out by Lubomir Stepanek and Michal Seda`
