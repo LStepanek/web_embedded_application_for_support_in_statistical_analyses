@@ -153,7 +153,7 @@ my_ui <- shinyUI(
                             ',
                             '
                             <!-- visit counter -->
-							<span style = "float:right">
+                            <span style = "float:right">
                             ',
                             paste(
                                 "<font size = '2'><b>",
@@ -168,6 +168,7 @@ my_ui <- shinyUI(
                             <!-- logos of faculties and universities -->
                             <a
                                 href = "https://prf.osu.eu/"
+                                id = "tooltip_univesity_of_ostrava"
                                 target = "_blank"
                             >
                                 <img
@@ -177,6 +178,7 @@ my_ui <- shinyUI(
                             </a>
                             <a
                                 href = "https://fis.vse.cz/english/"
+                                id = "tooltip_faculty_of_informatics_and_statistics"
                                 target = "_blank"
                             >
                                 <img
@@ -188,13 +190,26 @@ my_ui <- shinyUI(
                             ',
                             '
                             <!-- javascript functionalities in HTML -->
+                            <script>
+                                $("#tooltip_cc").attr(
+                                    "title",
+                                    "CC BY-NC-ND 3.0 CZ"
+                                );
+                                $("#tooltip_univesity_of_ostrava").attr(
+                                    "title",
+                                    "Faculty of Science, University of Ostrava"
+                                );
+                                $("#tooltip_faculty_of_informatics_and_statistics").attr(
+                                    "title",
+                                    "Facuty of Informatics and Statistics, Prague University of Economics and Business"
+                                );
+                            </script>
                             '
                         ),
                         style = "opacity: 1.00; z-index: 1000;"
                     )
                     
                 ),
-                
                 
                 # CSS bootstrap will be here
                 theme = "bootstrap.css",
