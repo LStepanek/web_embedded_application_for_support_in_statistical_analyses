@@ -16,7 +16,7 @@ A developer version of the application is available at <a href="https://statisti
 </p>
 
 <p align="center">
-<a href = "https://fis.vse.cz/" target = "_blank">
+<a href = "https://fis.vse.cz/english/" target = "_blank">
     <img
         src = "https://raw.githubusercontent.com/LStepanek/web_embedded_application_for_support_in_statistical_analyses/refs/heads/main/www/logo_faculty_of_informatics_and_statistics.png"
         style = "height:80px;"
