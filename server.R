@@ -67,7 +67,36 @@ my_server <- function(
     
 ){
     
-    ## ...
+    ## I am introducing a counter ---------------------------------------------
+    
+    output$my_counter <- renderText({
+        
+        if(
+            ! file.exists("my_counter.Rdata")
+        ){
+            
+            my_counter <- 0
+            
+        }else{
+            
+            load(file = "my_counter.Rdata")
+            
+        }
+        
+        my_counter <- my_counter + 1
+        
+        save(
+            my_counter,
+            file = "my_counter.Rdata"
+        )
+        
+        paste(
+            "Count of visits: ",
+            my_counter,
+            sep = ""
+        )
+        
+    })
     
     
     ## ------------------------------------------------------------------------

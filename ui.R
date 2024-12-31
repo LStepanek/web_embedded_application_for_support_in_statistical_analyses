@@ -153,10 +153,19 @@ my_ui <- shinyUI(
                             ',
                             '
                             <!-- visit counter -->
+							<span style = "float:right">
                             ',
+                            paste(
+                                "<font size = '2'><b>",
+                                textOutput(
+                                    "my_counter",
+                                    inline = TRUE
+                                ),
+                                "&emsp; </b></font>",
+                                sep = ""
+                            ),
                             '
                             <!-- logos of faculties and universities -->
-                            <span style = "float:right">
                             <a
                                 href = "https://prf.osu.eu/"
                                 target = "_blank"
