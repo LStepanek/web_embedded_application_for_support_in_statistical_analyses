@@ -35,6 +35,35 @@ for(
 }
 
 
+## I am loading all individual tabs -------------------------------------------
+
+my_global_working_directory <- getwd()
+
+setwd(
+    paste(
+        my_global_working_directory,
+        "tabs",
+        sep = "/"
+    )
+)
+
+for(
+    my_tab in dir()
+){
+    
+    source(
+        file = my_tab,
+        echo = FALSE,
+        encoding = "utf-8"
+    )
+    
+}
+
+setwd(
+    my_global_working_directory
+)
+
+
 ## ----------------------------------------------------------------------------
 
 ###############################################################################
@@ -96,7 +125,7 @@ my_ui <- shinyUI(
                 
                 position = "fixed-top",
                 
-                selected = "introduction",
+                selected = "tab_introduction",
                 
                 collapsible = TRUE,
                 
@@ -217,52 +246,12 @@ my_ui <- shinyUI(
                 
                 ## the first tab ----------------------------------------------
                 
-                tabPanel(
-                    
-                    title = "Introduction",
-                    
-                    value = "introduction",
-                    
-                    HTML("<br>"),
-                    HTML("<br>"),
-                    HTML("<br>"),
-                    
-                    h4("A purpose of this application"),
-                    
-                    p(
-                        "(i) ..."
-                    ),
-                    
-                    p(HTML(
-                        "(ii) ..."
-                    )),
-                    
-                    HTML("<hr>")
-                    
-                ),
+                tab_introduction,
                 
                 
                 ## the second tab ---------------------------------------------
                 
-                tabPanel(
-                    
-                    title = "Decision-making flowchart",
-                    
-                    value = "flowchart_tab",
-                    
-                    HTML("<br>"),
-                    HTML("<br>"),
-                    HTML("<br>"),
-                    
-                    h4("Decision-making flowchart"),
-                    
-                    p(HTML(
-                        "The flowchart for decision making will be here (...)"
-                    )),
-                    
-                    HTML("<hr>")
-                    
-                ),
+                tab_flowchart,
                 
                 
                 ## the third tab ----------------------------------------------
@@ -275,48 +264,12 @@ my_ui <- shinyUI(
                     
                     ## method 1 ------------------------------------------------
                     
-                    tabPanel(
-                        
-                        title = "Method 1",
-                        
-                        value = "method_1_tab",
-                        
-                        HTML("<br>"),
-                        HTML("<br>"),
-                        HTML("<br>"),
-                        
-                        h4("Method 1"),
-                        
-                        p(HTML(
-                          "This is just the first statistical method (...)"
-                        )),
-                        
-                        HTML("<hr>")
-                        
-                    ),
+                    tab_method_1,
                     
                     
                     ## method 2 ------------------------------------------------
                     
-                    tabPanel(
-                        
-                        title = "Method 2",
-                        
-                        value = "method_2_tab",
-                        
-                        HTML("<br>"),
-                        HTML("<br>"),
-                        HTML("<br>"),
-                        
-                        h4("Method 2"),
-                        
-                        p(HTML(
-                          "This is just the second statistical method (...)"
-                        )),
-                        
-                        HTML("<hr>")
-                        
-                    ),
+                    tab_method_2,
                     
                     
                     ## --------------------------------------------------------
@@ -329,25 +282,7 @@ my_ui <- shinyUI(
                 
                 ## the fourth tab ---------------------------------------------
                 
-                tabPanel(
-                    
-                    title = "About application",
-                    
-                    value = "about_tab",
-                    
-                    HTML("<br>"),
-                    HTML("<br>"),
-                    HTML("<br>"),
-                    
-                    h4("About application"),
-                    
-                    p(HTML(
-                        "Something about the application ..."
-                    )),
-                    
-                    HTML("<hr>")
-                    
-                )
+                tab_about
                 
             )
             
