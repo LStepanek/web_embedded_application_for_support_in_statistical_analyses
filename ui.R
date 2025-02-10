@@ -8,7 +8,8 @@ for(
     my_package in c(
         
         "shiny",
-        "shinyjs"
+        "shinyjs",
+        "DT"
         
     )
 ){
@@ -254,7 +255,12 @@ my_ui <- shinyUI(
                 tab_flowchart,
                 
                 
-                ## the third tab ----------------------------------------------
+                ## the third tab ---------------------------------------------
+                
+                tab_upload,
+                
+                
+                ## the fourth tab --------------------------------------------
                 
                 navbarMenu(
                     
@@ -280,7 +286,7 @@ my_ui <- shinyUI(
                 ),
                 
                 
-                ## the fourth tab ---------------------------------------------
+                ## the fifth tab ----------------------------------------------
                 
                 tab_about
                 
