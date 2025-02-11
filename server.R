@@ -115,9 +115,9 @@ my_server <- function(
             dataset_path <- file.path(
                 "datasets",
                 paste(
-                input$builtin_dataset,
-                ".csv",
-                sep = ""
+                    input$builtin_dataset,
+                    ".csv",
+                    sep = ""
                 )
             )
             
@@ -125,11 +125,16 @@ my_server <- function(
                 file.exists(dataset_path)
             ){
                 
+                data <- read.csv(
+                    dataset_path,
+                    header = TRUE
+                )
+                
+                rownames(data) <- data[, 1]
+                data <- data[, -1, drop = FALSE]
+                
                 return(
-                    read.csv(
-                        dataset_path,
-                        header = TRUE
-                    )
+                    data
                 )
                 
             }else{
@@ -153,6 +158,16 @@ my_server <- function(
             header = input$header,
             sep = input$separator
         )
+        
+        # if row names checkbox is checked, use first column as row names -----
+        
+        if(
+            input$use_first_col_as_rownames & ncol(data) > 1
+        ){
+            rownames(data) <- data[, 1]       # set first column as row names
+            data <- data[, -1, drop = FALSE]  # remove first column
+        }
+        
         
         # convert column data types based on user input -----------------------
         

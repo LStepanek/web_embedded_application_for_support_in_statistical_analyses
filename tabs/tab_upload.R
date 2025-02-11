@@ -33,6 +33,11 @@ tab_upload <- tabPanel(
                 "header",
                 "Does it contain a header?",
                 TRUE
+            ),
+            checkboxInput(
+                "use_first_col_as_rownames",
+                "Use first column as row names!",
+                FALSE
             )
         ),
         
