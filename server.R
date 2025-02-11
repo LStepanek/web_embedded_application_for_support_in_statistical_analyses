@@ -127,11 +127,51 @@ my_server <- function(
                 
                 data <- read.csv(
                     dataset_path,
-                    header = TRUE
+                    header = input$header,
+                    sep = input$separator
                 )
                 
-                rownames(data) <- data[, 1]
-                data <- data[, -1, drop = FALSE]
+                # if row names checkbox is checked, use first column
+                # as row names ------------------------------------------------
+                
+                if(
+                    input$use_first_col_as_rownames & ncol(data) > 1
+                ){
+                    rownames(data) <- data[, 1]
+                    data <- data[, -1, drop = FALSE]
+                }
+                
+                # convert column data types based on user input ---------------
+                
+                col_types <- unlist(
+                    strsplit(
+                        input$col_types,
+                        ""
+                    )
+                )
+                
+                if(
+                    length(col_types) == ncol(data)
+                ){
+                    
+                    data <- mapply(
+                        function(col, type){
+                            switch(
+                                type,
+                                "N" = as.numeric(col),
+                                "S" = as.character(col),
+                                "D" = as.Date(col),
+                                "L" = as.logical(col),
+                                col
+                            )
+                        },
+                        data,
+                        col_types,
+                        SIMPLIFY = FALSE
+                    )
+                    data <- as.data.frame(data)
+                    
+                }
                 
                 return(
                     data
