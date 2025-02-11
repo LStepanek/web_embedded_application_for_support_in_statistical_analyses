@@ -208,12 +208,55 @@ my_server <- function(
         
     })
     
+    # reactive function to get upload summary ---------------------------------
+    
+    upload_summary <- reactive({
+        
+        req(my_data())
+        data <- my_data()
+        
+        col_info <- data.frame(
+            "variable" = colnames(data),
+            "data type" = sapply(data, function(col) class(col)[1]),
+            stringsAsFactors = FALSE
+        )
+        
+        col_info
+        
+    })
+    
+    # render upload summary table ---------------------------------------------
+    
+    output$upload_summary_table <- renderDT({
+        
+        req(upload_summary())
+        datatable(
+            upload_summary(),
+            options = list(
+                pageLength = 10, 
+                autoWidth = TRUE, 
+                searchHighlight = TRUE, 
+                dom = 'Bfrtip'
+            ),
+            rownames = FALSE,
+            colnames = c("variable", "data type")
+        )
+        
+    })
+    
     # dynamically show "data preview" label only if a dataset is available ----
     
     output$data_preview_label <- renderUI({
         
         req(my_data())
         h4("Data preview")
+        
+    })
+    
+    output$upload_summary_label <- renderUI({
+        
+        req(upload_summary())
+        h4("Variable data types")
         
     })
     

@@ -93,6 +93,17 @@ tab_upload <- tabPanel(
         )
     ),
     
+    ## upload summary table ---------------------------------------------------
+    
+    fluidRow(
+        column(
+            width = 6,
+            offset = 3,
+            uiOutput("upload_summary_label"),
+            DTOutput("upload_summary_table")
+        )
+    ),
+    
     
     ## ------------------------------------------------------------------------
     
