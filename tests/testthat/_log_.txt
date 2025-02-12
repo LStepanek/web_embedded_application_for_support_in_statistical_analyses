@@ -1,0 +1,32 @@
+✔ |  OK F W S | Context
+✔ |   5       | UI Testing (test_ui.R)
+✔ |   4       | Server Logic Testing (test_server.R)
+✔ |   3       | Data Handling Testing (test_data_handling.R)
+✔ |   4       | File Upload Testing (test_file_upload.R)
+✔ |  16       | Total tests passed
+
+[INFO] Starting test execution...
+[INFO] Checking UI elements...
+[PASS] Found output: data_preview_label
+[PASS] Found output: data_table
+[PASS] Dataset selection updates the table
+[PASS] Snapshot test matches expected UI
+[INFO] All UI tests passed successfully!
+
+✔ UI elements are visible
+✔ data_preview_label found
+✔ data_table found
+✔ Built-in dataset selection updates table
+✔ Snapshot test matches previous UI state
+
+✔ File uploaded successfully
+✔ Data table updated with new content
+✔ First column correctly set as row names
+✔ No unexpected reactivity errors detected
+
+✔ Column A converted to type: double
+✔ Column B converted to type: character
+✔ Data transformations applied successfully
+
+✔ File upload successful
+✔ Data table displays uploaded file content
