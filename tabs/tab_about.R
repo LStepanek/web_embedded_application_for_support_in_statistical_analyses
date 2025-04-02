@@ -16,7 +16,7 @@ tab_about <- tabPanel(
         "Something about the application ..."
     )),
     
-    HTML("<hr />")
+    tags$hr()
     
 )
 

@@ -22,7 +22,7 @@ tab_introduction <- tabPanel(
         )
     ),
     
-    HTML("<hr />")
+    tags$hr()
     
 )
 

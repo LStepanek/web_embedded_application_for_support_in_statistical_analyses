@@ -16,7 +16,7 @@ tab_method_1 <- tabPanel(
       "This is just the first statistical method (...)"
     )),
     
-    HTML("<hr />")
+    tags$hr()
     
 )
 
