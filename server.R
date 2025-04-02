@@ -485,6 +485,166 @@ my_server <- function(
     
     ## ------------------------------------------------------------------------
     
+    ## logic of the two-sample t-test -----------------------------------------
+    
+    output$data_ready <- reactive({
+        !is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0
+    })
+    outputOptions(output, "data_ready", suspendWhenHidden = FALSE)
+    
+    observe({
+        
+        df <- my_data()
+        req(df)
+        validate(need(ncol(df) > 0, "No columns in uploaded data."))
+        
+        isolate({
+            # 1. Numeric variables (for outcome)
+            numeric_vars <- names(df)[sapply(df, is.numeric)]
+            updateSelectInput(
+                session,
+                "ttest_num_var",
+                choices = numeric_vars
+            )
+            
+            # 2. Grouping variable candidates: all non-numeric
+            group_var_candidates <- names(df)#[!sapply(df, is.numeric)]
+            updateSelectInput(
+                session,
+                "ttest_group_var",
+                choices = group_var_candidates
+            )
+        })
+        
+    })
+    
+    ttest_result <- reactive({
+        
+        df <- my_data()
+        req(df)
+        req(input$ttest_num_var, input$ttest_group_var)
+        
+        num_var_name <- isolate(input$ttest_num_var)
+        group_var_name <- isolate(input$ttest_group_var)
+        
+        # Safety: ensure selected columns exist in data
+        validate(
+            need(
+                num_var_name %in% names(df),
+                "Numeric variable not found in data."
+            ),
+            need(
+                group_var_name %in% names(df),
+                "Grouping variable not found in data."
+            )
+        )
+        
+        y <- df[[num_var_name]]
+        group_raw <- df[[group_var_name]]
+        
+        # Local conversion to factor
+        group <- try(as.factor(group_raw), silent = TRUE)
+        validate(
+            need(
+                !inherits(group, "try-error"),
+                "t-test: Grouping variable could not be converted to a factor."
+            ),
+            need(
+                nlevels(group) == 2,
+                "t-test: Grouping variable must have exactly 2 levels."
+            )
+        )
+        
+        # Local data frame for t-test
+        local_df <- data.frame(y = y, group = group)
+        
+        test <- t.test(y ~ group,
+        data = local_df,
+        alternative = input$ttest_alt,
+        mu = input$ttest_mu,
+        var.equal = FALSE)
+        
+        group_levels <- levels(group)
+        
+        data.frame(
+          "statistic" = round(test$statistic, 3),
+          "degrees of freedom" = round(test$parameter, 2),
+          "n of group 1" = sum(group == group_levels[1], na.rm = TRUE),
+          "n of group 2" = sum(group == group_levels[2], na.rm = TRUE),
+          "p-value" = signif(test$p.value, 4),
+          "confidence interval" = paste(
+              "(",
+              round(test$conf.int[1], 3),
+              ", ",
+              round(test$conf.int[2], 3), ")",
+              sep = ""
+          ),
+          "mean of group 1" = round(
+              mean(
+                  y[group == group_levels[1]],
+                  na.rm = TRUE
+              ),
+              3
+          ),
+          "mean of group 2" = round(
+              mean(
+                  y[group == group_levels[2]],
+                  na.rm = TRUE
+              ),
+              3
+          ),
+          check.names = FALSE
+        )
+        
+    })
+    
+    output$ttest_result <- renderTable({
+        ttest_result()
+    })
+    
+    output$ttest_boxplot <- renderPlot({
+        
+        df <- my_data()
+        req(df)
+        req(input$ttest_num_var)
+        req(input$ttest_group_var)
+        
+        num_var_name <- isolate(input$ttest_num_var)
+        group_var_name <- isolate(input$ttest_group_var)
+        
+        # validate(
+        #   need(num_var_name %in% names(df), "Numeric variable not in data."),
+        #   need(group_var_name %in% names(df), "Grouping variable not in data.")
+        # )
+        
+        y <- df[[num_var_name]]
+        group_raw <- df[[group_var_name]]
+        group <- try(as.factor(group_raw), silent = TRUE)
+        
+        validate(
+            need(
+                !inherits(group, "try-error"),
+                "boxplot: Grouping variable could not be converted to factor."
+            ),
+            need(
+                nlevels(group) == 2,
+                "boxplot: Grouping variable must have exactly 2 levels."
+            )
+        )
+        
+        boxplot(
+            y ~ group,
+            main = "Boxplot of Groups",
+            xlab = group_var_name,
+            ylab = num_var_name,
+            col = "lightblue",
+            border = "darkblue"
+        )
+        
+    })
+    
+    ## ------------------------------------------------------------------------
+    
 }
 
 
