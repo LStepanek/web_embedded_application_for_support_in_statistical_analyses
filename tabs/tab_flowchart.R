@@ -10,17 +10,15 @@ tab_flowchart <- tabPanel(
     
     value = "tab_flowchart",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    h4("Decision-making flowchart"),
-    
+    h1("Decision-making flowchart"),
+
     p(HTML(
         "The flowchart for decision making will be here (...)"
     )),
+
+    tags$img(src = "images/flowchart.svg", class = "flowchart"),
     
-    HTML("<hr>")
+    HTML("<hr />")
     
 )
 
