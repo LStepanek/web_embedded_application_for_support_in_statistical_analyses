@@ -10,6 +10,7 @@ for(
         "shiny",
         "shinyjs",
         "shinythemes",
+        "shinytoastr",
         "DT"
     )
 ){
@@ -98,7 +99,8 @@ my_ui <- shinyUI(
             
             ## I am calling shinyjs functionalities ---------------------------
             
-            shinyjs::useShinyjs(),
+            useShinyjs(),
+            useToastr(),
             
             
             ## user interface of the application ------------------------------

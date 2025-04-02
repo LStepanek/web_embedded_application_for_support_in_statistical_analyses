@@ -101,148 +101,86 @@ my_server <- function(
     
     
     ## logic of user of inbuilt data upload -----------------------------------
-    
-    # reactive dataset function -----------------------------------------------
-    
     my_data <- reactive({
         
-        # use built-in dataset if selected ------------------------------------
-        
-        if(
-            input$use_builtin
-        ){
+        # use built-in dataset if selected
+        if(input$use_builtin){
             
             dataset_path <- file.path(
                 "datasets",
-                paste(
-                    input$builtin_dataset,
-                    ".csv",
-                    sep = ""
-                )
+                paste(input$builtin_dataset, ".csv", sep = "")
             )
             
-            if(
-                file.exists(dataset_path)
-            ){
-                
-                data <- read.csv(
-                    dataset_path,
-                    header = input$header,
-                    sep = input$separator
-                )
-                
-                # if row names checkbox is checked, use first column
-                # as row names ------------------------------------------------
-                
-                if(
-                    input$use_first_col_as_rownames & ncol(data) > 1
-                ){
-                    rownames(data) <- data[, 1]
-                    data <- data[, -1, drop = FALSE]
-                }
-                
-                # convert column data types based on user input ---------------
-                
-                col_types <- unlist(
-                    strsplit(
-                        input$col_types,
-                        ""
-                    )
-                )
-                
-                if(
-                    length(col_types) == ncol(data)
-                ){
+            tryCatch({
+                if(file.exists(dataset_path)){
+                    data <- read.csv(dataset_path, header = input$header, sep = input$separator)
                     
-                    data <- mapply(
-                        function(col, type){
-                            switch(
-                                type,
-                                "N" = as.numeric(col),
-                                "S" = as.character(col),
-                                "D" = as.Date(col),
-                                "L" = as.logical(col),
-                                col
-                            )
-                        },
-                        data,
-                        col_types,
-                        SIMPLIFY = FALSE
-                    )
-                    data <- as.data.frame(data)
+                    if(input$use_first_col_as_rownames & ncol(data) > 1){
+                        rownames(data) <- data[, 1]
+                        data <- data[, -1, drop = FALSE]
+                    }
                     
+                    col_types <- unlist(strsplit(input$col_types, ""))
+                    if(length(col_types) == ncol(data)){
+                        data <- mapply(function(col, type){
+                            switch(type,
+                                   "N" = as.numeric(col),
+                                   "S" = as.character(col),
+                                   "D" = as.Date(col),
+                                   "L" = as.logical(col),
+                                   col)
+                        }, data, col_types, SIMPLIFY = FALSE)
+                        data <- as.data.frame(data)
+                    }
+                    
+                    # Success notification
+                    toastr_success(paste("File", input$builtin_dataset, "loaded successfully!"))
+                    return(data)
+                } else {
+                    showNotification(paste("Dataset", input$builtin_dataset, "not found!"), type = "error")
+                    toastr_error(paste("Dataset", input$builtin_dataset, "not found!"))
+                    return(NULL)
                 }
-                
-                return(
-                    data
-                )
-                
-            }else{
-                
-                showNotification(
-                    "Dataset not found!",
-                    type = "error"
-                )
+            }, error = function(e) {
+                toastr_error(paste("Error reading dataset:", e$message))
+                showNotification(paste("Error reading dataset: ", e$message), type = "error")
                 return(NULL)
-                
-            }
+            })
             
         }
         
-        # check if file is uploaded -------------------------------------------
-        
+        # check if file is uploaded
         req(input$file_upload)
         
-        data <- read.csv(
-            input$file_upload$datapath,
-            header = input$header,
-            sep = input$separator
-        )
-        
-        # if row names checkbox is checked, use first column as row names -----
-        
-        if(
-            input$use_first_col_as_rownames & ncol(data) > 1
-        ){
-            rownames(data) <- data[, 1]       # set first column as row names
-            data <- data[, -1, drop = FALSE]  # remove first column
-        }
-        
-        
-        # convert column data types based on user input -----------------------
-        
-        col_types <- unlist(
-            strsplit(
-                input$col_types,
-                ""
-            )
-        )
-        
-        if(
-            length(col_types) == ncol(data)
-        ){
+        tryCatch({
+            data <- read.csv(input$file_upload$datapath, header = input$header, sep = input$separator)
             
-            data <- mapply(
-                function(col, type){
-                    switch(
-                        type,
-                        "N" = as.numeric(col),
-                        "S" = as.character(col),
-                        "D" = as.Date(col),
-                        "L" = as.logical(col),
-                        col
-                    )
-                },
-                data,
-                col_types,
-                SIMPLIFY = FALSE
-            )
-            data <- as.data.frame(data)
+            if(input$use_first_col_as_rownames & ncol(data) > 1){
+                rownames(data) <- data[, 1]
+                data <- data[, -1, drop = FALSE]
+            }
             
-        }
-        
-        return(data)
-        
+            col_types <- unlist(strsplit(input$col_types, ""))
+            if(length(col_types) == ncol(data)){
+                data <- mapply(function(col, type){
+                    switch(type,
+                           "N" = as.numeric(col),
+                           "S" = as.character(col),
+                           "D" = as.Date(col),
+                           "L" = as.logical(col),
+                           col)
+                }, data, col_types, SIMPLIFY = FALSE)
+                data <- as.data.frame(data)
+            }
+            
+            # Success notification
+            toastr_success(paste("File", input$file_upload$name, "loaded successfully!"))
+            return(data)
+        }, error = function(e) {
+            toastr_error(paste("Error reading file:", e$message))
+            showNotification(paste("Error reading file: ", e$message), type = "error")
+            return(NULL)
+        })
     })
 
     # render Data Table only if dataset exists --------------------------------

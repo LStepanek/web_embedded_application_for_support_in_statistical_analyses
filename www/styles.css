@@ -23,3 +23,7 @@ img.flowchart {
   bottom: 0;
   left: 0;
 }
+
+.toast {
+    top: 60px !important;  /* show bellow top menu */
+}
