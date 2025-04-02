@@ -161,7 +161,7 @@ my_ui <- shinyUI(
                                     target = "_blank"
                                 >
                                     <img
-                                        src = "cc_by_nc_nd.png",
+                                        src = "images/cc_by_nc_nd.png",
                                         style = "height: 20px;"
                                     >
                                 </a>
@@ -202,7 +202,7 @@ my_ui <- shinyUI(
                                 target = "_blank"
                             >
                                 <img
-                                    src = "logo_univesity_of_ostrava.png",
+                                    src = "images/logo_univesity_of_ostrava.png",
                                     style = "height: 30px;"
                                 >
                             </a>
@@ -212,7 +212,7 @@ my_ui <- shinyUI(
                                 target = "_blank"
                             >
                                 <img
-                                    src = "logo_faculty_of_informatics_and_statistics.png",
+                                    src = "images/logo_faculty_of_informatics_and_statistics.png",
                                     style = "height: 20px;"
                                 >
                             </a>
