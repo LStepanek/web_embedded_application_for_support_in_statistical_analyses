@@ -107,11 +107,7 @@ my_ui <- shinyUI(
                 
                 ## header -----------------------------------------------------
             
-                title = div(
-                    HTML(
-                        "<font size = '5'>Statistical tools</font>"
-                    )
-                ),
+                title = tags$span(class = "project-title", "Statistical tools"),
                 
                 id = "my_navbar_page_set",
                 
@@ -139,11 +135,9 @@ my_ui <- shinyUI(
                                 </font>
                                 
                                 <!-- application version -->
-                                <font size = "2">
-                                    &nbsp; | &nbsp;
-                                    version 0.0.1
-                                    &nbsp; | &nbsp;
-                                </font>
+                                &nbsp; | &nbsp;
+                                version 0.0.1
+                                &nbsp; | &nbsp;
                                 
                                 <!-- licence and its logo -->
                                 <a
@@ -169,7 +163,7 @@ my_ui <- shinyUI(
                                 <!-- technical suppport -->
                                 A project within 
                                 <a
-                                    href = "https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR1/2&predmetRok=2025"
+                                    href = "https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR2&predmetRok=2025"
                                     target = "_blank"
                                 >
                                     XRPR1/2 Team project
@@ -180,19 +174,18 @@ my_ui <- shinyUI(
                             <span style = "float:right">
                             ',
                             paste(
-                                "<font size = '2'><b>",
+                                "<b>",
                                 textOutput(
                                     "my_counter",
                                     inline = TRUE
                                 ),
-                                "&emsp; </b></font>",
+                                "&emsp; </b>",
                                 sep = ""
                             ),
                             '
                             <!-- logos of faculties and universities -->
                             <a
                                 href = "https://prf.osu.eu/"
-                                id = "tooltip_univesity_of_ostrava"
                                 target = "_blank"
                             >
                                 <img
@@ -203,7 +196,6 @@ my_ui <- shinyUI(
                             </a>
                             <a
                                 href = "https://fis.vse.cz/english/"
-                                id = "tooltip_faculty_of_informatics_and_statistics"
                                 title = "Facuty of Informatics and Statistics, Prague University of Economics and Business"
                                 target = "_blank"
                             >
