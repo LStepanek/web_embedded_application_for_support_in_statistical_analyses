@@ -9,8 +9,8 @@ for(
         
         "shiny",
         "shinyjs",
+        "shinythemes",
         "DT"
-        
     )
 ){
     
@@ -74,28 +74,21 @@ setwd(
 my_ui <- shinyUI(
     
     fluidPage(
-        
+
+        # CSS bootstrap
+        theme = shinytheme("cerulean"),
+
         tagList(
         
             ## ----------------------------------------------------------------
             
             ###################################################################
             
-            ## CSS settings ---------------------------------------------------
-            
+            ## CSS & JS settings ---------------------------------------------------
+
             tags$head(
-                
-                tags$style(
-                    type = "text/css",
-                    paste(
-                        ".panel-footer {position:",
-                        "fixed; right: 0;",
-                        "bottom: 0;",
-                        "left: 0;}",
-                        sep = ""
-                    )
-                )
-                
+                tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
+                tags$script(src = "functions.js"),
             ),
             
             
@@ -158,12 +151,13 @@ my_ui <- shinyUI(
                                     "https://creativecommons.org/
                                     licenses/by-nc-nd/3.0/cz/"
                                     id = "tooltip_cc"
+                                    title = "CC BY-NC-ND 3.0 CZ"
                                     target = "_blank"
                                 >
                                     <img
                                         src = "images/cc_by_nc_nd.png",
                                         style = "height: 20px;"
-                                    >
+                                    />
                                 </a>
                                 
                                 <!-- licence abbreviation -->
@@ -175,10 +169,10 @@ my_ui <- shinyUI(
                                 <!-- technical suppport -->
                                 A project within 
                                 <a
-                                    href = "https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR1&predmetRok=2024"
+                                    href = "https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR1/2&predmetRok=2025"
                                     target = "_blank"
                                 >
-                                    XRPR1 Team project 1
+                                    XRPR1/2 Team project
                                 </a>
                             ',
                             '
@@ -203,46 +197,28 @@ my_ui <- shinyUI(
                             >
                                 <img
                                     src = "images/logo_univesity_of_ostrava.png",
+                                    title = "Faculty of Science, University of Ostrava"
                                     style = "height: 30px;"
-                                >
+                                />
                             </a>
                             <a
                                 href = "https://fis.vse.cz/english/"
                                 id = "tooltip_faculty_of_informatics_and_statistics"
+                                title = "Facuty of Informatics and Statistics, Prague University of Economics and Business"
                                 target = "_blank"
                             >
                                 <img
                                     src = "images/logo_faculty_of_informatics_and_statistics.png",
                                     style = "height: 20px;"
-                                >
+                                />
                             </a>
                             </span>
-                            ',
-                            '
-                            <!-- javascript functionalities in HTML -->
-                            <script>
-                                $("#tooltip_cc").attr(
-                                    "title",
-                                    "CC BY-NC-ND 3.0 CZ"
-                                );
-                                $("#tooltip_univesity_of_ostrava").attr(
-                                    "title",
-                                    "Faculty of Science, University of Ostrava"
-                                );
-                                $("#tooltip_faculty_of_informatics_and_statistics").attr(
-                                    "title",
-                                    "Facuty of Informatics and Statistics, Prague University of Economics and Business"
-                                );
-                            </script>
                             '
                         ),
                         style = "opacity: 1.00; z-index: 1000;"
                     )
                     
                 ),
-                
-                # CSS bootstrap will be here
-                theme = "bootstrap.css",
                 
                 
                 ## the first tab ----------------------------------------------
@@ -309,8 +285,3 @@ my_ui <- shinyUI(
 ###############################################################################
 ###############################################################################
 ###############################################################################
-
-
-
-
-
