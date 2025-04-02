@@ -10,17 +10,13 @@ tab_about <- tabPanel(
     
     value = "tab_about",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    h4("About application"),
+    h1("About application"),
     
     p(HTML(
         "Something about the application ..."
     )),
     
-    HTML("<hr>")
+    HTML("<hr />")
     
 )
 

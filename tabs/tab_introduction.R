@@ -10,11 +10,7 @@ tab_introduction <- tabPanel(
     
     value = "tab_introduction",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    h4("A purpose of this application"),
+    h1("A purpose of this application"),
     
     p(
         "(i) ..."
@@ -26,7 +22,7 @@ tab_introduction <- tabPanel(
         )
     ),
     
-    HTML("<hr>")
+    HTML("<hr />")
     
 )
 

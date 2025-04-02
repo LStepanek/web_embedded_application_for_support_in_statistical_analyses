@@ -10,17 +10,13 @@ tab_method_1 <- tabPanel(
     
     value = "tab_method_1",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    h4("Method 1"),
+    h1("Method 1"),
     
     p(HTML(
       "This is just the first statistical method (...)"
     )),
     
-    HTML("<hr>")
+    HTML("<hr />")
     
 )
 

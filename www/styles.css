@@ -1,8 +1,6 @@
-.panel-footer {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
+h1 {
+  font-size: 1.4em;
+  margin-top: 70px;
 }
 
 img.flowchart {
@@ -12,4 +10,11 @@ img.flowchart {
   min-width: 200px;
   min-height: 150px;
   margin-bottom: 50px;
+}
+
+.panel-footer {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }

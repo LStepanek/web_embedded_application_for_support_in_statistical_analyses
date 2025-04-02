@@ -10,11 +10,7 @@ tab_summary_plots <- tabPanel(
     
     value = "tab_summary_plots",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    h4("Summary plots"),
+    h1("Summary plots"),
     
     ## centered plots section
     fluidRow(
@@ -29,12 +25,12 @@ tab_summary_plots <- tabPanel(
     
     ## ------------------------------------------------------------------------
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>")
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />")
     
     
     ## ------------------------------------------------------------------------

@@ -19,7 +19,7 @@ tab_flowchart <- tabPanel(
     tags$img(src = "images/flowchart.svg", class = "flowchart"),
     
     HTML("<hr />")
-    
+
 )
 
 

@@ -10,11 +10,7 @@ tab_two_sample_t_test <- tabPanel(
     
     value = "tab_two_sample_t_test",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    HTML("<h4>Two-sample <i>t</i>-test</h4>"),
+    h1("Two-sample <i>t</i>-test"),
     
     sidebarLayout(
         sidebarPanel(
@@ -57,12 +53,12 @@ tab_two_sample_t_test <- tabPanel(
     
     ## ------------------------------------------------------------------------
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>")
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />")
     
     
     ## ------------------------------------------------------------------------

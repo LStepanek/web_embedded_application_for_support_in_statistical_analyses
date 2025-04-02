@@ -10,11 +10,7 @@ tab_upload <- tabPanel(
     
     value = "tab_upload",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    h4("Data upload"),
+    h1("Data upload"),
     
     fluidRow(
         
@@ -112,13 +108,12 @@ tab_upload <- tabPanel(
     
     ## ------------------------------------------------------------------------
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>")
-    
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />"),
+    HTML("<br />")
     
     ## ------------------------------------------------------------------------
     
