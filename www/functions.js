@@ -34,9 +34,6 @@ $(document).ready(function() {
     };
 
 
-    // statistic methods are disabled before data is loaded
-    setNavbarStatisticMethodsState(false);
-
     // allow Shiny to call this function
     Shiny.addCustomMessageHandler("setNavbarStatisticMethodsState", function(enabled) {
       setNavbarStatisticMethodsState(enabled);
