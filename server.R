@@ -135,6 +135,7 @@ my_server <- function(
                     
                     # Success notification
                     toastr_success(paste("File", input$builtin_dataset, "loaded successfully!"))
+                    #session$sendCustomMessage("enableNavbarStatisticMethods", TRUE)
                     return(data)
                 } else {
                     showNotification(paste("Dataset", input$builtin_dataset, "not found!"), type = "error")
@@ -183,12 +184,19 @@ my_server <- function(
         })
     })
 
+
     # render Data Table only if dataset exists --------------------------------
-    
+    #observeEvent(my_data(), {
+    #  session$sendCustomMessage("setNavbarStatisticMethodsState", 
+    #                            (!is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0))
+    #}, ignoreNULL = FALSE)
+
+
+    # render Data Table only if dataset exists --------------------------------
+
     output$data_table <- renderDT({
         
         req(my_data())
-        
         datatable(
             my_data(), 
             options = list(
@@ -198,7 +206,7 @@ my_server <- function(
                 dom = 'Bfrtip'
             )
         )
-        
+
     })
     
     # reactive function to get upload summary ---------------------------------
@@ -207,7 +215,7 @@ my_server <- function(
         
         req(my_data())
         data <- my_data()
-        
+
         col_info <- data.frame(
             "variable" = colnames(data),
             "data type" = sapply(data, function(col) class(col)[1]),
@@ -260,7 +268,7 @@ my_server <- function(
         
     })
     
-    
+
     # reactive function to get variable types ---------------------------------
     
     variable_types <- reactive({
