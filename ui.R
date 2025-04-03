@@ -235,6 +235,8 @@ my_ui <- shinyUI(
                 navbarMenu(
                     
                     title = "Some methods (...)",
+
+                    menuName = "statistic-methods",  
                     
                     ###########################################################
                     

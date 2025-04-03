@@ -16,4 +16,7 @@ $(document).ready(function() {
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     };
+
+    $('.navbar-nav .dropdown [data-value=\"statistic-methods\"]').addClass('disabled').css('pointer-events', 'none').css('opacity', '0.5');
+
 });
