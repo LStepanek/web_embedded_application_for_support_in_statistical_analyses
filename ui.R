@@ -88,8 +88,9 @@ my_ui <- shinyUI(
             ## CSS & JS settings ---------------------------------------------------
 
             tags$head(
+                tags$link(rel = "icon", type = "image/png", href = "favicon.png"),
                 tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
-                tags$script(src = "functions.js"),
+                tags$script(src = "functions.js")
             ),
             
             
