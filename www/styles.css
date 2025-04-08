@@ -22,8 +22,14 @@ img.flowchart {
   right: 0;
   bottom: 0;
   left: 0;
+  opacity: 1.00;
+  z-index: 1000;
 }
 
+.panel-footer img {
+  height: 30px;
+}
+                                        
 /* show toastr bellow top menu */
 .toast {
   top: 60px !important;

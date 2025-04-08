@@ -151,10 +151,7 @@ my_ui <- shinyUI(
                                     title = "CC BY-NC-ND 3.0 CZ"
                                     target = "_blank"
                                 >
-                                    <img
-                                        src = "images/cc_by_nc_nd.png",
-                                        style = "height: 20px;"
-                                    />
+                                    <img src = "images/cc_by_nc_nd.png" />
                                 </a>
                                 
                                 <!-- licence abbreviation -->
@@ -194,7 +191,6 @@ my_ui <- shinyUI(
                                 <img
                                     src = "images/logo_univesity_of_ostrava.png",
                                     title = "Faculty of Science, University of Ostrava"
-                                    style = "height: 30px;"
                                 />
                             </a>
                             <a
@@ -202,15 +198,11 @@ my_ui <- shinyUI(
                                 title = "Facuty of Informatics and Statistics, Prague University of Economics and Business"
                                 target = "_blank"
                             >
-                                <img
-                                    src = "images/logo_faculty_of_informatics_and_statistics.png",
-                                    style = "height: 20px;"
-                                />
+                                <img src = "images/logo_faculty_of_informatics_and_statistics.png" />
                             </a>
                             </span>
                             '
-                        ),
-                        style = "opacity: 1.00; z-index: 1000;"
+                        )
                     )
                     
                 ),
