@@ -195,18 +195,17 @@ my_server <- function(
     # render Data Table only if dataset exists --------------------------------
 
     output$data_table <- renderDT({
-        
         req(my_data())
         datatable(
             my_data(), 
             options = list(
-                pageLength = 10, 
+                pageLength = 10,
+                lengthMenu = c(10, 25, 50, 100, 250),
                 autoWidth = TRUE, 
                 searchHighlight = TRUE, 
-                dom = 'Bfrtip'
+                dom = 'Blfrtip'
             )
         )
-
     })
     
     # reactive function to get upload summary ---------------------------------
