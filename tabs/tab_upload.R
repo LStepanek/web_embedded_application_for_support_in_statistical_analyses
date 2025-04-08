@@ -18,8 +18,8 @@ tab_upload <- tabPanel(
             width = 3,
             fileInput(
                 "file_upload",
-                "Choose a .csv file",
-                accept = c(".csv")
+                label = HTML("Choose a data file<br/><small>Supported formats: .csv, .txt, .tsv, .xls, .xlsx</small>"),
+                accept = c(".csv", ".txt", ".tsv", ".xls", ".xlsx")
             )
         ),
         

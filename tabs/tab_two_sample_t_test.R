@@ -10,7 +10,7 @@ tab_two_sample_t_test <- tabPanel(
     
     value = "tab_two_sample_t_test",
     
-    h1("Two-sample <i>t</i>-test"),
+    h1(HTML("Two-sample <i>t</i>-test")),
     
     sidebarLayout(
         sidebarPanel(
