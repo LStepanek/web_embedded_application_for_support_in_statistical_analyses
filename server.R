@@ -154,31 +154,27 @@ my_server <- function(
         req(input$file_upload)
 
         tryCatch({
-            file_path <- input$file_upload$datapath
-            file_name <- input$file_upload$name
-            file_ext <- tolower(tools::file_ext(file_name))
+            # Read the file (keeping original structure)
+            data <- read.csv(input$file_upload$datapath, header = input$header, sep = input$separator)
             
-            # Detect and read supported file formats
-            if(file_ext %in% c("csv", "txt", "tsv")) {
-                data <- read.csv(file_path, header = input$header, sep = input$separator)
-            } else if(file_ext %in% c("xls", "xlsx")) {
-                library(readxl)
-                data <- read_excel(file_path, col_names = input$header)
-                data <- as.data.frame(data)
-            } else {
-                stop("Unsupported file format: ", file_ext)
+            # Check the number of rows
+            num_rows <- nrow(data)
+            
+            # If the file contains only one row (likely just a header), show a warning
+            if (num_rows <= 1) {
+                toastr_warning(paste("The file appears to be empty or contains only header data. Please check the content of the file."))
             }
-            
-            # Use first column as rownames
-            if(input$use_first_col_as_rownames && ncol(data) > 1) {
-                rownames(data) <- data[[1]]
+
+            # Handle row names if required
+            if(input$use_first_col_as_rownames & ncol(data) > 1){
+                rownames(data) <- data[, 1]
                 data <- data[, -1, drop = FALSE]
             }
-            
-            # Convert column types based on user input (e.g., "NSDL")
+
+            # Handle column types
             col_types <- unlist(strsplit(input$col_types, ""))
-            if(length(col_types) == ncol(data)) {
-                data <- mapply(function(col, type) {
+            if(length(col_types) == ncol(data)){
+                data <- mapply(function(col, type){
                     switch(type,
                            "N" = as.numeric(col),
                            "S" = as.character(col),
@@ -188,16 +184,17 @@ my_server <- function(
                 }, data, col_types, SIMPLIFY = FALSE)
                 data <- as.data.frame(data)
             }
-            
+
             # Success notification
-            toastr_success(paste("File", file_name, "loaded successfully!"))
+            toastr_success(paste("File", input$file_upload$name, "loaded successfully!"))
             return(data)
             
         }, error = function(e) {
             toastr_error(paste("Error reading file:", e$message))
-            showNotification(paste("Error reading file:", e$message), type = "error")
+            showNotification(paste("Error reading file: ", e$message), type = "error")
             return(NULL)
         })
+
     })
 
 

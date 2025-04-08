@@ -77,7 +77,7 @@ my_ui <- shinyUI(
     fluidPage(
 
         # CSS bootstrap
-        theme = shinytheme("spacelab"),
+        theme = shinytheme("cerulean"),
 
         tagList(
         
