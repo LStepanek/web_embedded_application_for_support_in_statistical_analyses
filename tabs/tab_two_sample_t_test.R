@@ -10,11 +10,7 @@ tab_two_sample_t_test <- tabPanel(
     
     value = "tab_two_sample_t_test",
     
-    HTML("<br>"),
-    HTML("<br>"),
-    HTML("<br>"),
-    
-    HTML("<h4>Two-sample <i>t</i>-test</h4>"),
+    HTML("<h1>Two-sample <i>t</i>-test</h1>"),
     
     sidebarLayout(
         sidebarPanel(
@@ -50,11 +46,7 @@ tab_two_sample_t_test <- tabPanel(
             tableOutput("ttest_result"),
             plotOutput("ttest_boxplot")
         )
-    ),
-    
-    HTML("<br><br><br><br><br><br>")
-    
-    ## ------------------------------------------------------------------------
+    )
     
 )
 
