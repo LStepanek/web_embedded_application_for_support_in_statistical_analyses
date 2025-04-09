@@ -126,99 +126,54 @@ my_ui <- shinyUI(
                 ## footer -----------------------------------------------------
                 
                 footer = list(
-                   
-                    div(class = "clear"),
-                    div(
-                        id = "panel-footer",
-                        HTML(
-                            '
-                                <!-- application name -->
-                                <font size = "3">
-                                    Statistical tools
-                                </font>
-                                
-                                <!-- application version -->
-                                &nbsp; | &nbsp;
-                                version 0.0.1
-                                &nbsp; | &nbsp;
-                                
-                                <!-- licence and its logo -->
-                                <a
-                                    href =
-                                    "https://creativecommons.org/
-                                    licenses/by-nc-nd/3.0/cz/"
-                                    id = "tooltip_cc"
-                                    title = "CC BY-NC-ND 3.0 CZ"
-                                    target = "_blank"
-                                >
-                                    <img src = "images/cc_by_nc_nd.png" />
-                                </a>
-                                
-                                <!-- licence abbreviation -->
-                                &nbsp;
-                                | &nbsp; CC BY-NC-ND 3.0 CZ &nbsp;
-                                | &nbsp; 2025 &nbsp;
-                                | &nbsp;
-                                
-                                <!-- technical suppport -->
-                                A project within 
-                                <a
-                                    href = "https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR2&predmetRok=2025"
-                                    target = "_blank"
-                                >
-                                    XRPR1/2 Team project
-                                </a>
-                            ',
-                            '
-                            <!-- visit counter -->
-                            <span class="right-content">
-                            ',
-                            paste(
-                                "<b>",
-                                textOutput(
-                                    "my_counter",
-                                    inline = TRUE
-                                ),
-                                "&emsp; </b>",
-                                sep = ""
-                            ),
-                            '
-                            <!-- logos of faculties and universities -->
-                            <a
-                                href = "https://prf.osu.eu/"
-                                target = "_blank"
-                            >
-                                <img
-                                    src = "images/logo_univesity_of_ostrava.png",
-                                    title = "Faculty of Science, University of Ostrava"
-                                />
-                            </a>
-                            <a
-                                href = "https://fis.vse.cz/english/"
-                                title = "Facuty of Informatics and Statistics, Prague University of Economics and Business"
-                                target = "_blank"
-                            >
-                                <img src = "images/logo_faculty_of_informatics_and_statistics.png" />
-                            </a>
-                            </span>
-                            '
-                        )
-                    )
-                    
-                ),                
+                  div(class = "clear"),
+                  
+                  div(id = "panel-footer",
+                    HTML('
+                      <font size="3">Statistical tools</font>
+                      &nbsp; | &nbsp; 0.0.1 &nbsp; | &nbsp;
+                      
+                      <!-- Licence and its logo -->
+                      <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/cz/" id="tooltip_cc" title="CC BY-NC-ND 3.0 CZ" target="_blank">
+                        <img src="images/cc_by_nc_nd.png" />
+                      </a>
+
+                      &nbsp; | &nbsp; CC BY-NC-ND 3.0 CZ &nbsp; | &nbsp; 2025 &nbsp; | &nbsp;
+                      
+                      <!-- Technical support -->
+                      A project within
+                      <a href="https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR2&predmetRok=2025" target="_blank">
+                        XRPR1/2 Team project
+                      </a>
+                      
+                      <!-- Visit counter -->
+                      <span class="right-content">
+                        <b>', textOutput("my_counter", inline = TRUE), '</b>
+                      </span>
+                      
+                      <!-- Logos of faculties and universities -->
+                      <span class="right-content">
+                        <a href="https://prf.osu.eu/" target="_blank">
+                          <img src="images/logo_univesity_of_ostrava.png" title="Faculty of Science, University of Ostrava" />
+                        </a>
+                        <a href="https://fis.vse.cz/english/" title="Faculty of Informatics and Statistics, Prague University of Economics and Business" target="_blank">
+                          <img src="images/logo_faculty_of_informatics_and_statistics.png" />
+                        </a>
+                      </span>
+                    ')
+                  )
+                ),
+              
                 
                 ## the first tab ----------------------------------------------
-                
                 tab_introduction,
                 
                 
                 ## the second tab ---------------------------------------------
-                
                 tab_flowchart,
                 
                 
                 ## the third tab ---------------------------------------------
-                
                 tab_upload,
                 
                 
@@ -227,36 +182,30 @@ my_ui <- shinyUI(
                 navbarMenu(
                     
                     title = "Some methods (...)",
-
                     menuName = "statistic-methods",  
                     
                     ###########################################################
                     
                     ## method 1 ------------------------------------------------
-                    
                     tab_summary_plots,
                     
                     
                     ## method 2 ------------------------------------------------
-                    
                     tab_method_2,
 					
 					
                     ## method 2 ------------------------------------------------
-                    
                     tab_two_sample_t_test
 					
                     
                     ## --------------------------------------------------------
                     
                     ###########################################################
-                    
-                    
+
                 ),
                 
                 
                 ## the fifth tab ----------------------------------------------
-                
                 tab_about
                 
             )
