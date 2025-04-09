@@ -4,6 +4,9 @@ This repository hosts a web-embedded application for supporting statistical anal
 A developer version of the application is available at <a href="https://statisticaltools.shinyapps.io/statistical_tools_test/" target="_blank">https://statisticaltools.shinyapps.io/statistical_tools_test/</a>.
 
 `EDIT (November 23, 2024): -- the project is worked out by Lubomir Stepanek and Michal Seda`
+
+`EDIT (February 22, 2025): -- the project is worked out by Lubomir Stepanek, Michal Seda, and Milan Cizek`
+
 <p align="center">
 <a href = "https://prf.osu.eu/" target = "_blank">
     <img
