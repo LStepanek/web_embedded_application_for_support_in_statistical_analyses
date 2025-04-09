@@ -129,7 +129,7 @@ my_ui <- shinyUI(
                    
                     div(class = "clear"),
                     div(
-                        class = "panel-footer",
+                        id = "panel-footer",
                         HTML(
                             '
                                 <!-- application name -->
@@ -171,7 +171,7 @@ my_ui <- shinyUI(
                             ',
                             '
                             <!-- visit counter -->
-                            <span style = "float:right">
+                            <span class="right-content">
                             ',
                             paste(
                                 "<b>",
@@ -205,8 +205,7 @@ my_ui <- shinyUI(
                         )
                     )
                     
-                ),
-                
+                ),                
                 
                 ## the first tab ----------------------------------------------
                 

@@ -1,3 +1,8 @@
+body {
+  padding-bottom: 80px !important; /* Zajistí, že obsah se neposune pod footer */
+  box-sizing: border-box;
+}
+
 .project-title {
   font-size: 1.32em;
 }
@@ -16,20 +21,29 @@ img.flowchart {
   margin-bottom: 50px;
 }
 
-.panel-footer {
+
+#panel-footer {
   font-size: 1em;
   position: fixed;
+  padding: 8px 12px;
+  left: 0;
   right: 0;
   bottom: 0;
-  left: 0;
+  background-color: #f5f5f5;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
   opacity: 1.00;
   z-index: 1000;
 }
 
-.panel-footer img {
-  height: 30px;
+#panel-footer .right-content {
+  float: right;
 }
-                                        
+
+#panel-footer img {
+  max-height: 30px;
+}
+
+
 /* show toastr bellow top menu */
 .toast {
   top: 60px !important;
