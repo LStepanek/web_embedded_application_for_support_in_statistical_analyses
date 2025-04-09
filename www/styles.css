@@ -8,8 +8,12 @@ body {
 }
 
 h1 {
-  font-size: 1.4em;
+  font-size: 1.7em;
   margin-top: 70px;
+}
+
+h2 {
+  font-size: 1.5em;
 }
 
 img.flowchart {

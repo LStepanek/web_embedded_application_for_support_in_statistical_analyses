@@ -262,21 +262,21 @@ my_server <- function(
     output$data_preview_label <- renderUI({
         
         req(my_data())
-        h4("Data preview")
+        h2("Data preview")
         
     })
     
     output$upload_summary_label <- renderUI({
         
         req(upload_summary())
-        h4("Variable data types")
+        h2("Variable data types")
         
     })
     
     output$plot_section_label <- renderUI({
         
         req(my_data())
-        h4("Variable distributions")
+        h2("Variable distributions")
         
     })
     
