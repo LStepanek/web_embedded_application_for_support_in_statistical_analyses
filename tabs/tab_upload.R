@@ -72,11 +72,7 @@ tab_upload <- tabPanel(
                 selectInput(
                     "builtin_dataset",
                     "Select dataset",
-                    choices = c(
-                        "mtcars",
-                        "airquality",
-                        "npk"
-                    )
+                    choices = NULL
                 )
             )
         )

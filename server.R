@@ -107,7 +107,7 @@ my_server <- function(
         if(input$use_builtin){
             
             dataset_path <- file.path(
-                "datasets",
+                SAMPLE_DATASETS_DIR,
                 paste(input$builtin_dataset, ".csv", sep = "")
             )
             
@@ -220,7 +220,16 @@ my_server <- function(
             )
         )
     })
-    
+
+
+    # dynamically load built-in CSV datasets from directory
+    observe({
+      file_names <- list.files(SAMPLE_DATASETS_DIR, pattern = "\\.csv$", full.names = FALSE)
+      file_names <- gsub("\\.csv$", "", file_names)
+      updateSelectInput(session, "builtin_dataset", choices = file_names)
+    })
+
+
     # reactive function to get upload summary ---------------------------------
     
     upload_summary <- reactive({
