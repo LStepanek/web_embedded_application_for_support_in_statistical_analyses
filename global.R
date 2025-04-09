@@ -12,6 +12,11 @@
 
 # options(warn = -1)      # I am turning off the messaging of benign warnings
 
+# this globally suppress the temporary visual red errors in shiny interface
+options(
+    shiny.sanitize.errors = TRUE
+)
+
 
 ## ----------------------------------------------------------------------------
 

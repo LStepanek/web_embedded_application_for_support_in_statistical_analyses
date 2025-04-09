@@ -10,7 +10,11 @@ tab_two_sample_t_test <- tabPanel(
     
     value = "tab_two_sample_t_test",
     
-    h1(HTML("Two-sample <i>t</i>-test")),
+    HTML("<br>"),
+    HTML("<br>"),
+    HTML("<br>"),
+    
+    HTML("<h4>Two-sample <i>t</i>-test</h4>"),
     
     sidebarLayout(
         sidebarPanel(
@@ -23,17 +27,14 @@ tab_two_sample_t_test <- tabPanel(
                 ),
                 selectInput(
                     "ttest_group_var",
-                    "Select grouping variable (2 levels):",
+                    "Select grouping variable:",
                     choices = NULL
                 ),
+                uiOutput("ttest_group_levels_ui"),
                 selectInput(
                     "ttest_alt",
                     "Alternative hypothesis:",
-                    choices = c(
-                        "two.sided",
-                        "less",
-                        "greater"
-                    ),
+                    choices = c("two.sided", "less", "greater"),
                     selected = "two.sided"
                 ),
                 numericInput(
@@ -45,10 +46,15 @@ tab_two_sample_t_test <- tabPanel(
             )
         ),
         mainPanel(
+            uiOutput("ttest_h0_statement"),
             tableOutput("ttest_result"),
             plotOutput("ttest_boxplot")
         )
     ),
+    
+    HTML("<br><br><br><br><br><br>")
+    
+    ## ------------------------------------------------------------------------
     
 )
 
@@ -58,3 +64,8 @@ tab_two_sample_t_test <- tabPanel(
 ###############################################################################
 ###############################################################################
 ###############################################################################
+
+
+
+
+
