@@ -162,7 +162,7 @@ my_ui <- shinyUI(
                             
                             <!-- visit counter -->
                             <span class="right-content">
-                                <b>Number of visits: ', paste(textOutput("my_counter", inline = TRUE)), '</b>&emsp;</b>
+                                <b>', paste(textOutput("my_counter", inline = TRUE)), '</b>&emsp;
                                 
                                 <!-- logos of faculties and universities -->
                                 <a href="https://prf.osu.eu/" target="_blank">
