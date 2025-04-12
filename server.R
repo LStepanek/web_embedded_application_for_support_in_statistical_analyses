@@ -108,7 +108,7 @@ my_server <- function(
             
             dataset_path <- file.path(
                 SAMPLE_DATASETS_DIR,
-                paste(input$builtin_dataset, ".csv", sep = "")
+                paste(input$builtin_dataset)
             )
             
             tryCatch({
@@ -232,11 +232,17 @@ my_server <- function(
           any(sapply(ALLOWED_DATA_FILES, function(ext) grepl(paste0(ext, "$"), f)))
         })]
         
-        # Remove extensions for display purposes in selectInput
-        file_names <- gsub(paste(ALLOWED_DATA_FILES, collapse = "|"), "", file_names)
+        # Remove extensions for display purposes (only for display, not value)
+        display_names <- sub(paste0("(", paste(ALLOWED_DATA_FILES, collapse = "|"), ")$"), "", file_names)
         
-        # Update the selectInput with the filtered file names
-        updateSelectInput(session, "builtin_dataset", choices = file_names)
+        # Create named vector: display_name = value_with_extension
+        named_choices <- setNames(file_names, display_names)
+        
+        # Debug output
+        toastr_error(paste("Nalezené soubory:", paste(file_names, collapse = ", ")))
+        
+        # Update the selectInput with display names and actual file names as values
+        updateSelectInput(session, "builtin_dataset", choices = named_choices)
       } else {
         # If checkbox is not selected, clear the selectInput
         updateSelectInput(session, "builtin_dataset", choices = NULL)
