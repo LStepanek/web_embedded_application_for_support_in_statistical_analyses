@@ -222,11 +222,25 @@ my_server <- function(
     })
 
 
-    # dynamically load built-in CSV datasets from directory
-    observe({
-      file_names <- list.files(SAMPLE_DATASETS_DIR, pattern = "\\.csv$", full.names = FALSE)
-      file_names <- gsub("\\.csv$", "", file_names)
-      updateSelectInput(session, "builtin_dataset", choices = file_names)
+    observeEvent(input$use_builtin, {
+      if (input$use_builtin) {
+        # Load all files from the directory
+        all_files <- list.files(SAMPLE_DATASETS_DIR, full.names = FALSE)
+        
+        # Filter files based on the allowed extensions in ALLOWED_DATA_FILES
+        file_names <- all_files[sapply(all_files, function(f) {
+          any(sapply(ALLOWED_DATA_FILES, function(ext) grepl(paste0(ext, "$"), f)))
+        })]
+        
+        # Remove extensions for display purposes in selectInput
+        file_names <- gsub(paste(ALLOWED_DATA_FILES, collapse = "|"), "", file_names)
+        
+        # Update the selectInput with the filtered file names
+        updateSelectInput(session, "builtin_dataset", choices = file_names)
+      } else {
+        # If checkbox is not selected, clear the selectInput
+        updateSelectInput(session, "builtin_dataset", choices = NULL)
+      }
     })
 
 

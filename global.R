@@ -3,6 +3,7 @@
 ###############################################################################
 
 SAMPLE_DATASETS_DIR <- "datasets"
+ALLOWED_DATA_FILES  <- c(".csv", ".txt", ".tsv", ".xls", ".xlsx")
 
 
 ## error and warning handling -------------------------------------------------
