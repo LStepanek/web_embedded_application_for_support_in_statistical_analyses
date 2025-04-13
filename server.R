@@ -113,7 +113,7 @@ my_server <- function(
             
             tryCatch({
                 if(file.exists(dataset_path)){
-                    data <- read.csv(dataset_path, header = input$header, sep = input$separator)
+                    data <- read.csv(dataset_path, header = input$header, sep = input$col_separator)
                     
                     if(input$use_first_col_as_rownames & ncol(data) > 1){
                         rownames(data) <- data[, 1]
@@ -134,17 +134,16 @@ my_server <- function(
                     }
                     
                     # Success notification
-                    toastr_success(paste("File", input$builtin_dataset, "loaded successfully!"))
-                    #session$sendCustomMessage("enableNavbarStatisticMethods", TRUE)
+                    toastr_success(paste("Built-in dataset", sQuote(input$builtin_dataset), "loaded successfully!"))
                     return(data)
                 } else {
-                    showNotification(paste("Dataset", input$builtin_dataset, "not found!"), type = "error")
-                    toastr_error(paste("Dataset", input$builtin_dataset, "not found!"))
+                    showNotification(paste("Built-in dataset", sQuote(input$builtin_dataset), "not found!"), type = "error")
+                    toastr_error(paste("Built-in dataset", sQuote(input$builtin_dataset), "not found!"))
                     return(NULL)
                 }
             }, error = function(e) {
-                toastr_error(paste("Error reading dataset:", e$message))
-                showNotification(paste("Error reading dataset: ", e$message), type = "error")
+                toastr_error(paste("Error reading built-in dataset:", e$message))
+                showNotification(paste("Error reading built-in dataset: ", e$message), type = "error")
                 return(NULL)
             })
             
@@ -155,7 +154,7 @@ my_server <- function(
 
         tryCatch({
             # Read the file (keeping original structure)
-            data <- read.csv(input$file_upload$datapath, header = input$header, sep = input$separator)
+            data <- read.csv(input$file_upload$datapath, header = input$header, sep = input$col_separator)
             
             # Check the number of rows
             num_rows <- nrow(data)
@@ -186,7 +185,7 @@ my_server <- function(
             }
 
             # Success notification
-            toastr_success(paste("File", input$file_upload$name, "loaded successfully!"))
+            toastr_success(paste("File", sQuote(input$file_upload$name), "loaded successfully!"))
             return(data)
             
         }, error = function(e) {
@@ -209,14 +208,20 @@ my_server <- function(
 
     output$data_table <- renderDT({
         req(my_data())
+
+        # Nahradíme NA hodnoty řetězcem "N/A"
+        data_display <- my_data()
+        data_display[is.na(data_display)] <- "N/A"
+
         datatable(
-            my_data(), 
+            data_display,
             options = list(
                 pageLength = 10,
                 lengthMenu = c(10, 25, 50, 100, 250),
-                autoWidth = TRUE, 
-                searchHighlight = TRUE, 
-                dom = 'Blfrtip'
+                autoWidth = TRUE,
+                searchHighlight = TRUE,
+                dom = 'Blfrtip',
+                rowCallback = JS("highlightMissingCells")
             )
         )
     })
@@ -237,9 +242,6 @@ my_server <- function(
         
         # Create named vector: display_name = value_with_extension
         named_choices <- setNames(file_names, display_names)
-        
-        # Debug output
-        toastr_error(paste("Nalezené soubory:", paste(file_names, collapse = ", ")))
         
         # Update the selectInput with display names and actual file names as values
         updateSelectInput(session, "builtin_dataset", choices = named_choices)

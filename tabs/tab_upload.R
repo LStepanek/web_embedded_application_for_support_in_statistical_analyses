@@ -40,7 +40,7 @@ tab_upload <- tabPanel(
         column(
             width = 2,
             radioButtons(
-                "separator",
+                "col_separator",
                 "Separator", 
                 choices = c(
                     "Comma" = ",",

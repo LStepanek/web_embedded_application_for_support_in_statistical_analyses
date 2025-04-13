@@ -26,6 +26,12 @@ img.flowchart {
   min-height: 150px;
 }
 
+td.missing-cell {
+  background-color: #f2dede !important;
+  color: #990000 !important;
+  font-style: italic;
+  font-weight: bold;
+}
 
 #panel-footer {
   font-size: 1em;
