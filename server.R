@@ -103,26 +103,33 @@ my_server <- function(
     ## logic of user of inbuilt data upload -----------------------------------
     my_data <- reactive({
         
-        # use built-in dataset if selected
-        if(input$use_builtin){
-            
+        # built-in dataset
+        if (input$use_builtin) {
             dataset_path <- file.path(
                 SAMPLE_DATASETS_DIR,
                 paste(input$builtin_dataset)
             )
             
             tryCatch({
-                if(file.exists(dataset_path)){
-                    data <- read.csv(dataset_path, header = input$header, sep = input$col_separator)
+                if (file.exists(dataset_path)) {
+                    file_ext <- tools::file_ext(dataset_path)
                     
-                    if(input$use_first_col_as_rownames & ncol(data) > 1){
-                        rownames(data) <- data[, 1]
+                    if (file_ext %in% c("xls", "xlsx")) {
+                        data <- readxl::read_excel(dataset_path)
+                    } else {
+                        data <- read.csv(dataset_path, header = input$header, sep = input$col_separator)
+                    }
+
+                    # rownames
+                    if (input$use_first_col_as_rownames && ncol(data) > 1) {
+                        rownames(data) <- data[[1]]
                         data <- data[, -1, drop = FALSE]
                     }
-                    
+
+                    # column types
                     col_types <- unlist(strsplit(input$col_types, ""))
-                    if(length(col_types) == ncol(data)){
-                        data <- mapply(function(col, type){
+                    if (length(col_types) == ncol(data)) {
+                        data <- mapply(function(col, type) {
                             switch(type,
                                    "N" = as.numeric(col),
                                    "S" = as.character(col),
@@ -132,13 +139,12 @@ my_server <- function(
                         }, data, col_types, SIMPLIFY = FALSE)
                         data <- as.data.frame(data)
                     }
-                    
-                    # Success notification
+
                     toastr_success(paste("Built-in dataset", sQuote(input$builtin_dataset), "loaded successfully!"))
                     return(data)
                 } else {
-                    showNotification(paste("Built-in dataset", sQuote(input$builtin_dataset), "not found!"), type = "error")
                     toastr_error(paste("Built-in dataset", sQuote(input$builtin_dataset), "not found!"))
+                    showNotification(paste("Built-in dataset", sQuote(input$builtin_dataset), "not found!"), type = "error")
                     return(NULL)
                 }
             }, error = function(e) {
@@ -146,34 +152,33 @@ my_server <- function(
                 showNotification(paste("Error reading built-in dataset: ", e$message), type = "error")
                 return(NULL)
             })
-            
         }
-        
-        # check if file is uploaded
+
+        # uploaded file
         req(input$file_upload)
 
         tryCatch({
-            # Read the file (keeping original structure)
-            data <- read.csv(input$file_upload$datapath, header = input$header, sep = input$col_separator)
+            file_ext <- tools::file_ext(input$file_upload$name)
             
-            # Check the number of rows
-            num_rows <- nrow(data)
-            
-            # If the file contains only one row (likely just a header), show a warning
-            if (num_rows <= 1) {
-                toastr_warning(paste("The file appears to be empty or contains only header data. Please check the content of the file."))
+            if (file_ext %in% c("xls", "xlsx")) {
+                data <- readxl::read_excel(input$file_upload$datapath)
+            } else {
+                data <- read.csv(input$file_upload$datapath, header = input$header, sep = input$col_separator)
             }
 
-            # Handle row names if required
-            if(input$use_first_col_as_rownames & ncol(data) > 1){
-                rownames(data) <- data[, 1]
+            num_rows <- nrow(data)
+            if (num_rows <= 1) {
+                toastr_warning("The file appears to be empty or contains only header data. Please check the content of the file.")
+            }
+
+            if (input$use_first_col_as_rownames && ncol(data) > 1) {
+                rownames(data) <- data[[1]]
                 data <- data[, -1, drop = FALSE]
             }
 
-            # Handle column types
             col_types <- unlist(strsplit(input$col_types, ""))
-            if(length(col_types) == ncol(data)){
-                data <- mapply(function(col, type){
+            if (length(col_types) == ncol(data)) {
+                data <- mapply(function(col, type) {
                     switch(type,
                            "N" = as.numeric(col),
                            "S" = as.character(col),
@@ -184,24 +189,14 @@ my_server <- function(
                 data <- as.data.frame(data)
             }
 
-            # Success notification
             toastr_success(paste("File", sQuote(input$file_upload$name), "loaded successfully!"))
             return(data)
-            
         }, error = function(e) {
             toastr_error(paste("Error reading file:", e$message))
             showNotification(paste("Error reading file: ", e$message), type = "error")
             return(NULL)
         })
-
     })
-
-
-    # render Data Table only if dataset exists --------------------------------
-    #observeEvent(my_data(), {
-    #  session$sendCustomMessage("setNavbarStatisticMethodsState", 
-    #                            (!is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0))
-    #}, ignoreNULL = FALSE)
 
 
     # render Data Table only if dataset exists --------------------------------
@@ -477,7 +472,9 @@ my_server <- function(
     ## logic of the two-sample t-test -----------------------------------------
     
     output$data_ready <- reactive({
-        !is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0
+        ready <- !is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0
+        session$sendCustomMessage("setNavbarStatisticMethodsState", ready)
+        ready
     })
     outputOptions(output, "data_ready", suspendWhenHidden = FALSE)
     

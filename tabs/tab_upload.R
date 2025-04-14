@@ -20,11 +20,25 @@ tab_upload <- tabPanel(
                 "file_upload",
                 label = HTML("Choose a data file<br/><small>Supported formats: ", paste(ALLOWED_DATA_FILES, collapse = ", "), "</small>"),
                 accept = paste(ALLOWED_DATA_FILES, collapse = ", ")
+            ),
+
+            checkboxInput(
+                "use_builtin",
+                label = HTML("<b>Or use built-in dataset?</b>"),
+                FALSE
+            ),
+            conditionalPanel(
+                condition = "input.use_builtin == true",
+                selectInput(
+                    "builtin_dataset",
+                    "Select dataset",
+                    choices = NULL
+                )
             )
         ),
-        
+
         column(
-            width = 2,
+            width = 3,
             checkboxInput(
                 "header",
                 "Does it contain a header?",
@@ -38,7 +52,7 @@ tab_upload <- tabPanel(
         ),
         
         column(
-            width = 2,
+            width = 3,
             radioButtons(
                 "col_separator",
                 "Separator", 
@@ -56,26 +70,9 @@ tab_upload <- tabPanel(
             textInput(
                 "col_types",
                 "Column data types",
-                placeholder = "e.g., NSSD"
+                placeholder = "e.g., NSSLD"
             )
         ),
-        
-        column(
-            width = 2,
-            checkboxInput(
-                "use_builtin",
-                "Use built-in dataset?",
-                FALSE
-            ),
-            conditionalPanel(
-                condition = "input.use_builtin == true",
-                selectInput(
-                    "builtin_dataset",
-                    "Select dataset",
-                    choices = NULL
-                )
-            )
-        )
         
     ),
     
