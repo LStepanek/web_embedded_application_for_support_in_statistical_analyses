@@ -4,7 +4,23 @@
 
 ## user-defined functions -----------------------------------------------------
 
-
+# Installs and loads specified packages if they are not already installed.
+install_and_load_packages <- function(packages) {
+    for (my_package in packages) {
+        if (!(my_package %in% rownames(installed.packages()))) {
+            install.packages(
+                my_package,
+                dependencies = TRUE,
+                repos = "http://cran.us.r-project.org"
+            )
+        }
+        
+        library(
+            my_package,
+            character.only = TRUE
+        )
+    }
+}
 
 
 ## ----------------------------------------------------------------------------

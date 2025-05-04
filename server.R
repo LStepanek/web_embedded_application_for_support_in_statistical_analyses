@@ -2,39 +2,6 @@
 ###############################################################################
 ###############################################################################
 
-## I am loading packages ------------------------------------------------------
-
-for(
-    my_package in c(
-        
-        "shiny",
-        "shinyjs",
-        "DT",
-        "readxl"
-    )
-){
-    
-    if(
-        !(
-            my_package %in% rownames(installed.packages())
-        )
-    ){
-        
-        install.packages(
-            my_package,
-            dependencies = TRUE,
-            repos = "http://cran.us.r-project.org"
-        )
-        
-    }
-    
-    library(
-        my_package,
-        character.only = TRUE
-    )
-    
-}
-
 
 ## I am loading a module with user-defined functions --------------------------
 
@@ -52,6 +19,15 @@ source(
     echo = FALSE,
     encoding = "UTF-8"
 )
+
+
+## I am loading packages ------------------------------------------------------
+
+# List of packages to be installed and loaded
+packages_to_install <- c("shiny", "shinyjs", "DT", "readxl")
+
+# Call the function to install and load the packages
+install_and_load_packages(packages_to_install)
 
 
 ## ----------------------------------------------------------------------------
