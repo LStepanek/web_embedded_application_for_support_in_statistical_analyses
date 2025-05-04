@@ -24,10 +24,10 @@ source(
 ## I am loading packages ------------------------------------------------------
 
 # List of packages to be installed and loaded
-packages_to_install <- c("shiny", "shinyjs", "DT", "readxl")
+required_packages <- c("shiny", "shinyjs", "DT", "readxl")
 
 # Call the function to install and load the packages
-install_and_load_packages(packages_to_install)
+install_and_load_packages(required_packages)
 
 
 ## ----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ my_server <- function(
     input,
     output,
     session
-    
+
 ){
     
     ## I am introducing a counter ---------------------------------------------
