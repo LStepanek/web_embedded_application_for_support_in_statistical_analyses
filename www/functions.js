@@ -74,7 +74,7 @@ function renderDataTypeSelector(data, type, row, options) {
 $(document).ready(function() {
   toastr.options = {
       "closeButton": true,
-      "debug": true,
+      "debug": false,
       "newestOnTop": false,
       "progressBar": true,
       "preventDuplicates": true,
@@ -91,10 +91,13 @@ $(document).ready(function() {
   };
 
 
+  // column data types input is read-only
+  document.getElementById("col_types").readOnly = true;
+
+
   // allow Shiny to call this function
   Shiny.addCustomMessageHandler("setNavbarStatisticMethodsState", function(enabled) {
     setNavbarStatisticMethodsState(enabled);
   });
 
 });
-
