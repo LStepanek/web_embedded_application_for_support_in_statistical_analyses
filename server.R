@@ -245,32 +245,33 @@ my_server <- function(
     output$upload_summary_table <- renderDT({
         req(upload_summary())
 
-        select_options <- c("integer", "numeric", "logical", "string", "character", "date")
+        select_options <- c("integer", "numeric", "logical", "string", "character", "date", "POSIXct")
 
         datatable(
-          upload_summary(),
-          escape = FALSE,  
-          options = list(
-            pageLength = 10,
-            autoWidth = TRUE,
-            dom = 'Bfrtip',
-            ordering = FALSE,
-            columnDefs = list(list(
-              targets = 1,
-              render = JS(sprintf(
-                "function(data, type, row, meta) {
-                   var options = ['%s'];
-                   return renderDataTypeSelector(data, type, row, options);
-                 }",
-                paste(select_options, collapse = "','")
-              ))
-            ))
-          ),
-          rownames = FALSE,
-          colnames = c("Variable", "Data type"),
-          selection = "none"
+            upload_summary(),
+            escape = FALSE,  
+            options = list(
+                pageLength = 10,
+                autoWidth = TRUE,
+                dom = 'Bfrtip',
+                ordering = FALSE,
+                stateSave = TRUE,  # Save the table state, but for visible rows only
+                columnDefs = list(list(
+                    targets = 1,
+                    render = JS(sprintf(
+                        "function(data, type, row, meta) {
+                           var options = ['%s'];
+                           return renderDataTypeSelector(data, type, row, options);
+                         }",
+                        paste(select_options, collapse = "','")
+                    ))
+                ))
+            ),
+            rownames = FALSE,
+            colnames = c("Variable", "Data type"),
+            selection = "none"
         )        
-    })
+    }, server = FALSE)      
 
     
     # dynamically show "data preview" label only if a dataset is available ----

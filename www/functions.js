@@ -24,17 +24,25 @@ function highlightMissingCells(row, data, index) {
 }
 
 
-// Function to update the abbreviation string using the first character of each selected value
+// Function to build a string of data type abbreviations based on the first character of each selected value
+// Considers all rows, including those on hidden pages (due to pagination)
 function getSelectedDataTypes() {
-  var dataTypes = '';
+  var dataTypes = "";
+  var table = $('#upload_summary_table table').DataTable();
 
-  // Iterate over all <select> elements within the DataTable
-  $('#upload_summary_table').find('select').each(function() {
-    var value = $(this).val().charAt(0).toUpperCase();
+  table.rows().every(function(rowIdx, tableLoop, rowLoop) {
+    var cellNode = table.cell(rowIdx, 1).node();  // Get the DOM element of the 2nd column cell
+    var $select = $('select', cellNode);          // Try to find a <select> element inside the cell
 
-    // Only include characters that match allowed data type initials
-    if (value && /^[INLSCD]$/.test(value)) {
-      dataTypes += value;
+    // Determine value based on presence of <select>
+    var rawValue = $select.length ? $select.val() : this.data()[1];
+
+    // Process the value: take the first character and convert to uppercase
+    if (rawValue && rawValue.charAt) {
+      var firstLetter = rawValue.charAt(0).toUpperCase();
+      if (/^[INLSCDP]$/.test(firstLetter)) {
+        dataTypes += firstLetter;
+      }
     }
   });
 
@@ -43,14 +51,16 @@ function getSelectedDataTypes() {
 
 // Triggered when a select box value is changed
 function onDataTypeSelectChange(columnName, newType) {
+  // Get all data types from the table (including hidden rows)
   var dataTypes = getSelectedDataTypes();
 
   // Display a toast notification
   //toastr.info('Data type for column "' + columnName + '" was changed to: ' + newType + '.');
 
-  // Update the visible input field so the user can see the change
+  // Update input value for Shiny app
   document.getElementById("col_types").value = dataTypes;
-  // Notify Shiny about the new value
+
+  // Send data types to Shiny app
   Shiny.setInputValue("col_types", dataTypes, {priority: "event"});
 }
 
