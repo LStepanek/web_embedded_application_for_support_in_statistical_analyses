@@ -77,102 +77,187 @@ my_server <- function(
     
     
     ## logic of user of inbuilt data upload -----------------------------------
-    my_data <- reactive({
-        
-        # built-in dataset
-        if (input$use_builtin) {
-            dataset_path <- file.path(
-                SAMPLE_DATASETS_DIR,
-                paste(input$builtin_dataset)
-            )
-            
-            tryCatch({
-                if (file.exists(dataset_path)) {
-                    file_ext <- tools::file_ext(dataset_path)
-                    
-                    if (file_ext %in% c("xls", "xlsx")) {
-                        data <- readxl::read_excel(dataset_path)
-                    } else {
-                        data <- read.csv(dataset_path, header = input$header, sep = input$col_separator)
-                    }
+    my_data <- reactiveVal(NULL)
 
-                    # rownames
-                    if (input$use_first_col_as_rownames && ncol(data) > 1) {
-                        rownames(data) <- data[[1]]
-                        data <- data[, -1, drop = FALSE]
-                    }
+    builtin_file <- reactiveVal(NULL)
+    uploaded_file <- reactiveVal(NULL)  # potřebuji, protože fileinput si i po reset drží název souboru
 
-                    # column types
-                    col_types <- unlist(strsplit(input$col_types, ""))
-                    if (length(col_types) == ncol(data)) {
-                        data <- mapply(function(col, type) {
-                            switch(type,
-                                   "N" = as.numeric(col),
-                                   "S" = as.character(col),
-                                   "D" = as.Date(col),
-                                   "L" = as.logical(col),
-                                   col)
-                        }, data, col_types, SIMPLIFY = FALSE)
-                        data <- as.data.frame(data)
-                    }
 
-                    toastr_success(paste("Built-in dataset", sQuote(input$builtin_dataset), "loaded successfully!"))
-                    return(data)
-                } else {
-                    toastr_error(paste("Built-in dataset", sQuote(input$builtin_dataset), "not found!"))
-                    showNotification(paste("Built-in dataset", sQuote(input$builtin_dataset), "not found!"), type = "error")
-                    return(NULL)
-                }
-            }, error = function(e) {
-                toastr_error(paste("Error reading built-in dataset:", e$message))
-                showNotification(paste("Error reading built-in dataset: ", e$message), type = "error")
-                return(NULL)
-            })
+    # Add all supported built-in datasets to selectInput
+    updateSelectInput(session, "builtin_dataset", choices = get_builtin_named_datasets())
+
+
+
+    load_dataset <- function(session, fullpath, name, header_included, col_separator, use_first_col_as_rownames, col_types, builtin = TRUE, quiet = FALSE) {
+      source_type_str <- paste(if (builtin) "built-in dataset" else "file", sQuote(name))
+
+      if (!quiet && !is.null(builtin_file())) {
+        toastr_info(sprintf("Built-in dataset %s was successfully unloaded.", sQuote(builtin_file())))
+        builtin_file(NULL)
+      }
+      if (!quiet && !is.null(uploaded_file())) {
+        toastr_info(sprintf("File %s was successfully unloaded.", sQuote(uploaded_file())))
+        uploaded_file(NULL)
+      }
+
+      if (!file.exists(fullpath)) {
+        msg_error <- sprintf("The %s not found!", source_type_str)
+        toastr_error(msg_error)
+        showNotification(msg_error, type = "error")
+
+        session$sendCustomMessage("setNavbarStatisticMethodsState", FALSE)
+        return(NULL)
+      }
+
+      tryCatch({
+        file_ext <- tools::file_ext(fullpath)
+
+        if (file_ext %in% c("xls", "xlsx")) {
+          disable(selector = "input[name='col_separator']")
+          data <- readxl::read_excel(fullpath, col_names = header_included)
+        } else {
+          enable(selector = "input[name='col_separator']")
+          data <- read.csv(fullpath, header = header_included, sep = col_separator)
         }
 
-        # uploaded file
-        req(input$file_upload)
+        if (nrow(data) <= 1) {
+          toastr_warning(sprintf("The %s appears to be empty or contains only header data.", source_type_str))
+        }
 
-        tryCatch({
-            file_ext <- tools::file_ext(input$file_upload$name)
-            
-            if (file_ext %in% c("xls", "xlsx")) {
-                data <- readxl::read_excel(input$file_upload$datapath)
-            } else {
-                data <- read.csv(input$file_upload$datapath, header = input$header, sep = input$col_separator)
-            }
+        if (use_first_col_as_rownames && ncol(data) > 1) {
+          rownames(data) <- data[[1]]
+          data <- data[, -1, drop = FALSE]
+        }
 
-            num_rows <- nrow(data)
-            if (num_rows <= 1) {
-                toastr_warning("The file appears to be empty or contains only header data. Please check the content of the file.")
-            }
+        num_missings <- sum(is.na(data))
+        if (num_missings > 0) {
+          if (!quiet) toastr_warning(sprintf("The %s contains %s missing value(s).", source_type_str, num_missings))
+          # enablovat volbu pro řešení missingů
+        } else {
+          # disablovat volbu pro řešení missingů
+        }
 
-            if (input$use_first_col_as_rownames && ncol(data) > 1) {
-                rownames(data) <- data[[1]]
-                data <- data[, -1, drop = FALSE]
-            }
+        col_types_vec <- unlist(strsplit(col_types, ""))
+        if (length(col_types_vec) == ncol(data)) {
+          data <- mapply(function(col, type) {
+            switch(type,
+                   "N" = as.numeric(col),
+                   "S" = as.character(col),
+                   "D" = as.Date(col),
+                   "L" = as.logical(col),
+                   col)
+          }, data, col_types_vec, SIMPLIFY = FALSE)
+          data <- as.data.frame(data)
+        }
 
-            col_types <- unlist(strsplit(input$col_types, ""))
-            if (length(col_types) == ncol(data)) {
-                data <- mapply(function(col, type) {
-                    switch(type,
-                           "N" = as.numeric(col),
-                           "S" = as.character(col),
-                           "D" = as.Date(col),
-                           "L" = as.logical(col),
-                           col)
-                }, data, col_types, SIMPLIFY = FALSE)
-                data <- as.data.frame(data)
-            }
+        if (!quiet) toastr_success(sprintf("The %s loaded successfully!", source_type_str))
+        session$sendCustomMessage("setNavbarStatisticMethodsState", TRUE)
 
-            toastr_success(paste("File", sQuote(input$file_upload$name), "loaded successfully!"))
-            return(data)
-        }, error = function(e) {
-            toastr_error(paste("Error reading file:", e$message))
-            showNotification(paste("Error reading file: ", e$message), type = "error")
-            return(NULL)
-        })
+        # vše OK, uložíme si název souboru pro případný upload
+        if (builtin) {
+            builtin_file(name)
+        } else {
+            uploaded_file(name)
+        }
+
+        return(data)
+
+      }, error = function(e) {
+        msg_error <- sprintf("Error reading %s %s.", source_type_str, e$message)
+        toastr_error(paste(msg_error))
+        showNotification(msg_error, type = "error")
+        session$sendCustomMessage("setNavbarStatisticMethodsState", FALSE)
+
+        return(NULL)
+      })
+    }
+
+
+    # Reagujeme na nahrání souboru
+    observeEvent(input$file_upload, ignoreInit = TRUE, {
+      req(input$file_upload)
+
+      if (input$use_builtin) {
+        # odškrtneme případný nahraný vestavěný dataset
+        updateCheckboxInput(session, "use_builtin", value = FALSE)
+      }
+
+      data <- load_dataset(
+        session = session,
+        fullpath = input$file_upload$datapath,
+        name = input$file_upload$name,
+        header_included = input$header,
+        col_separator = input$col_separator,
+        use_first_col_as_rownames = input$use_first_col_as_rownames,
+        col_types = input$col_types,
+        builtin = FALSE,
+        quiet = FALSE
+      )
+
+      my_data(data)
     })
+
+
+    # Reagujeme na vybrání vestavěného datasetu
+    observeEvent(list(input$use_builtin, input$builtin_dataset), ignoreInit = TRUE, {
+      if (input$use_builtin) {
+        if (!is.null(uploaded_file())) {
+          reset("file_upload")
+        }
+
+        data <- load_dataset(
+          session = session,
+          fullpath = file.path(SAMPLE_DATASETS_DIR, paste(input$builtin_dataset)),
+          name = input$builtin_dataset,
+          header_included = input$header,
+          col_separator = input$col_separator,
+          use_first_col_as_rownames = input$use_first_col_as_rownames,
+          col_types = input$col_types,
+          builtin = TRUE,
+          quiet = FALSE
+        )
+
+        my_data(data)
+
+      } else {
+        # odškrtnutí vestavěného datasetu
+        if (!is.null(builtin_file())) {
+          toastr_info(paste("Built-in dataset", sQuote(builtin_file()), "was successfully unloaded."))
+          session$sendCustomMessage("setNavbarStatisticMethodsState", FALSE)
+          builtin_file(NULL)
+          my_data(NULL)
+        }
+      }
+    })
+
+
+    observeEvent(list(input$header, input$use_first_col_as_rownames, input$col_separator, input$col_types), ignoreInit = TRUE, {
+        req(my_data())  # pokud už máme nějaká data, budeme dělat jen reload s jinými parametry
+
+        if (input$use_builtin) {
+          name = input$builtin_dataset
+          header_included = input$header
+        } else {
+          name = input$file_upload$name
+          header_included = input$header
+        }
+
+        data <- load_dataset(
+          session = session,
+          fullpath = file.path(SAMPLE_DATASETS_DIR, paste(input$builtin_dataset)),
+          name = name,
+          header_included = header_included,
+          col_separator = input$col_separator,
+          use_first_col_as_rownames = input$use_first_col_as_rownames,
+          col_types = input$col_types,
+          builtin = FALSE,
+          quiet = TRUE
+        )
+
+        my_data(data)
+    })
+
+
 
 
     # render Data Table only if dataset exists --------------------------------
@@ -198,28 +283,12 @@ my_server <- function(
     })
 
 
-    observeEvent(input$use_builtin, {
-      if (input$use_builtin) {
-        # Load all files from the directory
-        all_files <- list.files(SAMPLE_DATASETS_DIR, full.names = FALSE)
-        
-        # Filter files based on the allowed extensions in ALLOWED_DATA_FILES
-        file_names <- all_files[sapply(all_files, function(f) {
-          any(sapply(ALLOWED_DATA_FILES, function(ext) grepl(paste0(ext, "$"), f)))
-        })]
-        
-        # Remove extensions for display purposes (only for display, not value)
-        display_names <- sub(paste0("(", paste(ALLOWED_DATA_FILES, collapse = "|"), ")$"), "", file_names)
-        
-        # Create named vector: display_name = value_with_extension
-        named_choices <- setNames(file_names, display_names)
-        
-        # Update the selectInput with display names and actual file names as values
-        updateSelectInput(session, "builtin_dataset", choices = named_choices)
-      } else {
-        # If checkbox is not selected, clear the selectInput
-        updateSelectInput(session, "builtin_dataset", choices = NULL)
-      }
+
+
+    # nikde se nevyužívá
+    observeEvent(my_data(), {
+      is_data_valid <- !is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0
+      #toastr_info(paste(!is.null(my_data())))
     })
 
 
@@ -235,7 +304,7 @@ my_server <- function(
             "data type" = sapply(data, function(col) class(col)[1]),
             stringsAsFactors = FALSE
         )
-        
+
         col_info
         
     })
@@ -463,9 +532,7 @@ my_server <- function(
     ## logic of the two-sample t-test -----------------------------------------
     
     output$data_ready <- reactive({
-        ready <- !is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0
-        session$sendCustomMessage("setNavbarStatisticMethodsState", ready)
-        ready
+        !is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0
     })
     outputOptions(output, "data_ready", suspendWhenHidden = FALSE)
     
@@ -762,8 +829,4 @@ my_server <- function(
 ###############################################################################
 ###############################################################################
 ###############################################################################
-
-
-
-
 
