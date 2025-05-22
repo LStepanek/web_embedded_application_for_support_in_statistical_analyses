@@ -114,6 +114,18 @@ my_server <- function(
 
         if (file_ext %in% c("xls", "xlsx")) {
           disable(selector = "input[name='col_separator']")
+
+          sheet_names <- readxl::excel_sheets(fullpath)
+          if (length(sheet_names) > 1) {
+            msg_multiple_sheets <- sprintf(
+              "Multiple sheets detected (%d) in the %s file. Due to application limitations, only the first sheet will be loaded.",
+              length(sheet_names), file_ext
+            )
+
+            toastr_info(msg_multiple_sheets)
+            #showNotification(msg_multiple_sheets, type = "message")
+          }
+
           data <- readxl::read_excel(fullpath, col_names = header_included)
         } else {
           enable(selector = "input[name='col_separator']")
