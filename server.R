@@ -44,37 +44,24 @@ my_server <- function(
 
 ){
     
+    ## Register all system information variables for about tab
+    register_sysinfo_outputs(output)
+  
     ## I am introducing a counter ---------------------------------------------
-    
     output$my_counter <- renderText({
-        
         if(
             ! file.exists("my_counter.Rdata")
-        ){
-            
+        ) {
             my_counter <- 0
-            
-        }else{
-            
+        } else {
             load(file = "my_counter.Rdata")
-            
         }
         
         my_counter <- my_counter + 1
-        
-        save(
-            my_counter,
-            file = "my_counter.Rdata"
-        )
-        
-        paste(
-            "Count of visits: ",
-            my_counter,
-            sep = ""
-        )
-        
+        save(my_counter, file = "my_counter.Rdata" )
+        paste("Count of visits: ", my_counter, sep = "")
     })
-    
+
     
     ## logic of user of inbuilt data upload -----------------------------------
     my_data <- reactiveVal(NULL)

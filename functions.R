@@ -38,13 +38,49 @@ get_builtin_named_datasets <- function(dir_path = SAMPLE_DATASETS_DIR, allowed_e
 }
 
 
+# Register system information (R/Shiny versions, OS, CPU name, number of cores, and total RAM) outputs
+register_sysinfo_outputs <- function(output) {
+
+  # Helper function to detect CPU name depending on the operating system
+  get_cpu_name <- function() {
+    sys <- Sys.info()[["sysname"]]
+    if (sys == "Linux") {
+      system("cat /proc/cpuinfo | grep 'model name' | head -1 | cut -d: -f2", intern = TRUE)
+    } else if (sys == "Windows") {
+      system("wmic cpu get name", intern = TRUE)[2]
+    } else if (sys == "Darwin") {
+      system("sysctl -n machdep.cpu.brand_string", intern = TRUE)
+    } else {
+      "Unknown CPU"
+    }
+  }
+  
+  # Detect logical and physical cores
+  cores_logical  <- parallel::detectCores(logical = TRUE)
+  cores_physical <- parallel::detectCores(logical = FALSE)
+  
+  # Collect system information into a named list
+  sysinfo <- list(
+    r_version = paste(R.version$major, R.version$minor, sep = "."),
+    shiny_ver = as.character(packageVersion("shiny")),
+    os        = paste(Sys.info()[["sysname"]], Sys.info()[["release"]]),
+    cpu       = get_cpu_name(),
+    cores     = paste0(cores_physical, " physical / ", cores_logical, " logical"),
+    ram_gb    = round(ps::ps_system_memory()$total / 1024^3, 1)
+  )
+
+  # Assign each piece of system information to the corresponding output
+  output$r_version <- renderText({ sysinfo$r_version })
+  output$shiny_ver <- renderText({ sysinfo$shiny_ver })
+  output$os        <- renderText({ sysinfo$os })
+  output$cpu       <- renderText({ sysinfo$cpu })
+  output$cores     <- renderText({ sysinfo$cores })
+  output$ram       <- renderText({ paste(sysinfo$ram_gb, "GB") })
+}
+
+
 ## ----------------------------------------------------------------------------
 
 ###############################################################################
 ###############################################################################
 ###############################################################################
-
-
-
-
-
