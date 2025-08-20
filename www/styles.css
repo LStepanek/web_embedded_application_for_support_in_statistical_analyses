@@ -65,3 +65,11 @@ td.missing-cell {
   pointer-events: none;
   opacity: 0.5;
 }
+
+
+/* hide elements with the 'no-print' class when printing */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

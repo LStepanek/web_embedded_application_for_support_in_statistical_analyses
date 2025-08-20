@@ -130,6 +130,7 @@ my_ui <- shinyUI(
                   
                     div(
                         id = "panel-footer",
+                        class = "no-print",
                         HTML(
                             '
                             <!-- application name -->
