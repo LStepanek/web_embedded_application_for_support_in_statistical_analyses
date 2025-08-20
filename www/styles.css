@@ -18,6 +18,10 @@ h2 {
   font-size: 1.5em;
 }
 
+h3 {
+  font-size: 1.3em;
+}
+
 img.flowchart {
   width: 100%;
   height: auto;
@@ -72,9 +76,13 @@ td.missing-cell {
   .no-print {
     display: none !important;
   }
-  
+
+  h1:first-of-type {
+    margin-top: 0;
+  }
+
   #panel-footer {
-    display: none !important; /* skryje footer */
+    display: none !important;
   }
 
   /* hide toastr notifications from print output */
