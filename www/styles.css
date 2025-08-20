@@ -72,4 +72,14 @@ td.missing-cell {
   .no-print {
     display: none !important;
   }
+  
+  #panel-footer {
+    display: none !important; /* skryje footer */
+  }
+
+  /* hide toastr notifications from print output */
+  .toast-container,
+  .toast {
+    display: none !important;
+  }
 }

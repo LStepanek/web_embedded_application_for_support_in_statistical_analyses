@@ -111,15 +111,10 @@ my_ui <- shinyUI(
                 ## header -----------------------------------------------------
             
                 title = tags$span(class = "project-title", "Statistical tools"),
-                
                 id = "my_navbar_page_set",
-                
                 windowTitle = "Statistical tools",
-                
                 position = "fixed-top",
-                
                 selected = "tab_introduction",
-                
                 collapsible = TRUE,
                 
                 
@@ -128,61 +123,60 @@ my_ui <- shinyUI(
                 footer = list(
                   div(class = "clear"),
                   
-                    div(
-                        id = "panel-footer",
-                        class = "no-print",
-                        HTML(
-                            '
-                            <!-- application name -->
-                            <font size="3">Statistical tools</font>
-                            
-                            <!-- application version -->
-                            &nbsp; | &nbsp; version 0.0.1 &nbsp; | &nbsp;
-                            
-                            <!-- licence and its logo -->
-                            <a
-                                href="https://creativecommons.org/licenses/by-nc-nd/3.0/cz/"
-                                id="tooltip_cc"
-                                title="CC BY-NC-ND 3.0 CZ"
-                                target="_blank"
-                            >
-                                <img src="images/cc_by_nc_nd.png" />
-                            </a>
-                            
-                            <!-- licence abbreviation -->
-                            &nbsp; | &nbsp; CC BY-NC-ND 3.0 CZ &nbsp; | &nbsp; 2025 &nbsp; | &nbsp;
-                            
-                            <!-- technical support -->
-                            A project within
-                            <a
-                                href="https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR2&predmetRok=2025"
-                                target="_blank"
-                            >
-                                XRPR1/2 Team project
-                            </a>
-                            
-                            <!-- visit counter -->
-                            <span class="right-content">
-                                <b>', paste(textOutput("my_counter", inline = TRUE)), '</b>&emsp;
-                                
-                                <!-- logos of faculties and universities -->
-                                <a href="https://prf.osu.eu/" target="_blank">
-                                    <img
-                                        src="images/logo_univesity_of_ostrava.png"
-                                        title="Faculty of Science, University of Ostrava"
-                                    />
-                                </a>
-                                <a
-                                    href="https://fis.vse.cz/english/"
-                                    title="Faculty of Informatics and Statistics, Prague University of Economics and Business"
-                                    target="_blank"
-                                >
-                                    <img src="images/logo_faculty_of_informatics_and_statistics.png" />
-                                </a>
-                            </span>
-                            '
-                        )
-                    )
+                  div(
+                      id = "panel-footer",
+                      HTML(
+                          '
+                          <!-- application name -->
+                          <font size="3">Statistical tools</font>
+                          
+                          <!-- application version -->
+                          &nbsp; | &nbsp; version 0.0.1 &nbsp; | &nbsp;
+                          
+                          <!-- licence and its logo -->
+                          <a
+                              href="https://creativecommons.org/licenses/by-nc-nd/3.0/cz/"
+                              id="tooltip_cc"
+                              title="CC BY-NC-ND 3.0 CZ"
+                              target="_blank"
+                          >
+                              <img src="images/cc_by_nc_nd.png" />
+                          </a>
+                          
+                          <!-- licence abbreviation -->
+                          &nbsp; | &nbsp; CC BY-NC-ND 3.0 CZ &nbsp; | &nbsp; 2025 &nbsp; | &nbsp;
+                          
+                          <!-- technical support -->
+                          A project within
+                          <a
+                              href="https://portal.osu.cz/stag?urlid=prohlizeni-predmet-sylabus&predmetZkrPrac=KIP&predmetZkrPred=XRPR2&predmetRok=2025"
+                              target="_blank"
+                          >
+                              XRPR1/2 Team project
+                          </a>
+                          
+                          <!-- visit counter -->
+                          <span class="right-content">
+                              <b>', paste(textOutput("my_counter", inline = TRUE)), '</b>&emsp;
+                              
+                              <!-- logos of faculties and universities -->
+                              <a href="https://prf.osu.eu/" target="_blank">
+                                  <img
+                                      src="images/logo_univesity_of_ostrava.png"
+                                      title="Faculty of Science, University of Ostrava"
+                                  />
+                              </a>
+                              <a
+                                  href="https://fis.vse.cz/english/"
+                                  title="Faculty of Informatics and Statistics, Prague University of Economics and Business"
+                                  target="_blank"
+                              >
+                                  <img src="images/logo_faculty_of_informatics_and_statistics.png" />
+                              </a>
+                          </span>
+                          '
+                      )
+                  )
 
                 ),
               
