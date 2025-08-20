@@ -29,7 +29,9 @@ tab_about <- tabPanel(
     h2("Key Packages Used"),
     tags$ul(
       tags$li(tags$em("shiny"), " – main framework for interactive web apps"),
+      tags$li(tags$em("shinythemes"), " – provides ready-to-use Bootstrap themes for Shiny apps"),
       tags$li(tags$em("shinyjs"), " – JavaScript enhancements for Shiny"),
+      tags$li(tags$em("shinytoastr"), " – non-blocking toast notifications in Shiny apps"),
       tags$li(tags$em("DT"), " – interactive tables"),
       tags$li(tags$em("readxl"), " – reading Excel files"),
     ),
@@ -52,7 +54,7 @@ tab_about <- tabPanel(
         href = "https://github.com/LStepanek/web_embedded_application_for_support_in_statistical_analyses/wiki")),
     
     h2("Acknowledgements"),
-    p(HTML("We gratefully acknowledge the authors and contributors of the open-source R packages used in this project, including <em>shiny</em>, <em>shinyjs</em>, <em>DT</em>, and <em>readxl</em>.")),
+    p(HTML("We gratefully acknowledge the authors and contributors of the open-source R packages used in this project, including <em>shiny</em>, <em>shinythemes</em>, <em>shinyjs</em>, <em>shinytoastr</em>, <em>DT</em>, and <em>readxl</em>.")),
     
     p("Special thanks to Jaroslav Zacek (University of Ostrava) for his guidance and mentorship throughout the project."),
     
