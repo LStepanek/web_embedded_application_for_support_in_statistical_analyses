@@ -3,7 +3,7 @@
 ###############################################################################
 
 SAMPLE_DATASETS_DIR <- "datasets"
-ALLOWED_DATA_FILES  <- c(".csv", ".txt", ".tsv", ".xls", ".xlsx")
+ALLOWED_DATA_FILES  <- c(".csv", ".json", ".txt", ".tsv", ".xls", ".xlsx")
 DATA_TYPE_OPTIONS <- c("integer", "numeric", "logical", "string", "character", "date", "POSIXct")
 
 

@@ -96,10 +96,15 @@ my_server <- function(
         return(NULL)
       }
 
+      # enable all data settings (checkboxes and radiobuttons)
+      enable(selector = "div#data_options")
+      enable(selector = "input[name='col_separator']")
+
       tryCatch({
         file_ext <- tools::file_ext(fullpath)
 
         if (file_ext %in% c("xls", "xlsx")) {
+          # XLS/XLSX data
           disable(selector = "input[name='col_separator']")
 
           sheet_names <- readxl::excel_sheets(fullpath)
@@ -114,8 +119,19 @@ my_server <- function(
           }
 
           data <- readxl::read_excel(fullpath, col_names = header_included)
+
+        } else if (file_ext %in% c("json")) {
+          # JSON data (newline-delimited)
+          #disable(selector = "div#data_options")
+          disable(selector = "#data_options input#header")
+          disable(selector = "input[name='col_separator']")
+
+          json_lines <- readLines(fullpath, warn = FALSE)
+          data_list <- lapply(json_lines, function(line) jsonlite::fromJSON(line))
+          data <- as.data.frame(do.call(rbind, data_list), stringsAsFactors = FALSE)
+
         } else {
-          enable(selector = "input[name='col_separator']")
+          # CSV/TXT/TSV
           data <- read.csv(fullpath, header = header_included, sep = col_separator)
         }
 
@@ -230,8 +246,9 @@ my_server <- function(
     })
 
 
+    # Reagujeme na změnu voleb checkboxů a radiobuttonů
     observeEvent(list(input$header, input$use_first_col_as_rownames, input$col_separator, input$col_types), ignoreInit = TRUE, {
-        req(my_data())  # pokud už máme nějaká data, budeme dělat jen reload s jinými parametry
+        req(my_data())  # pokud už máme nějaká data, budeme dělat jen tichý reload s jinými parametry
 
         if (input$use_builtin) {
           name = input$builtin_dataset
