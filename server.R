@@ -24,7 +24,7 @@ source(
 ## I am loading packages ------------------------------------------------------
 
 # List of packages to be installed and loaded
-required_packages <- c("shiny", "shinyjs", "DT", "readxl", "jsonlite")
+required_packages <- c("shiny", "shinyjs", "DT", "readxl")
 
 # Call the function to install and load the packages
 install_and_load_packages(required_packages)
@@ -553,7 +553,7 @@ my_server <- function(
     observe({
         df <- my_data()
         req(df)
-        validate(need(ncol(df) > 0, "No columns in uploaded data."))
+        shiny::validate(need(ncol(df) > 0, "No columns in uploaded data."))
         
         isolate({
             numeric_vars <- names(df)[sapply(df, is.numeric)]
@@ -578,7 +578,7 @@ my_server <- function(
         
         group_raw <- df[[input$ttest_group_var]]
         group <- try(as.factor(group_raw), silent = TRUE)
-        validate(
+        shiny::validate(
             need(
                 !inherits(group, "try-error"),
                 "Cannot coerce grouping variable to factor."
@@ -606,7 +606,7 @@ my_server <- function(
             input$ttest_group_var,
             input$ttest_selected_levels
         )
-        validate(
+        shiny::validate(
             need(
                 length(input$ttest_selected_levels) == 2,
                 "Select exactly two groups."
@@ -616,7 +616,7 @@ my_server <- function(
         num_var_name <- isolate(input$ttest_num_var)
         group_var_name <- isolate(input$ttest_group_var)
         
-        validate(
+        shiny::validate(
             need(
                 num_var_name %in% names(df),
                 "Numeric variable not found."
@@ -631,7 +631,7 @@ my_server <- function(
         group_raw <- df[[group_var_name]]
         
         # checks
-        validate(
+        shiny::validate(
             need(
                 is.numeric(y),
                 "Selected outcome variable must be numeric."
@@ -652,7 +652,7 @@ my_server <- function(
             levels = input$ttest_selected_levels
         )   # set correct order
         
-        validate(
+        shiny::validate(
             need(nlevels(group) == 2,
             "After subsetting, must have exactly 2 groups.")
         )
@@ -723,7 +723,7 @@ my_server <- function(
                     input$ttest_group_var,
                     input$ttest_selected_levels
                 )
-                validate(
+                shiny::validate(
                     need(
                         length(input$ttest_selected_levels) == 2,
                         "Select exactly two groups."
@@ -774,7 +774,7 @@ my_server <- function(
             input$ttest_group_var,
             input$ttest_selected_levels
         )
-        validate(
+        shiny::validate(
             need(
                 length(input$ttest_selected_levels) == 2,
                 "Select two groups."
