@@ -24,7 +24,7 @@ source(
 ## I am loading packages ------------------------------------------------------
 
 # List of packages to be installed and loaded
-required_packages <- c("shiny", "shinyjs", "DT", "readxl")
+required_packages <- c("shiny", "shinyjs", "DT", "readxl", "jsonlite")
 
 # Call the function to install and load the packages
 install_and_load_packages(required_packages)

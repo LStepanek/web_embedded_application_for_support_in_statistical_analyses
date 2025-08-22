@@ -34,6 +34,9 @@ tab_about <- tabPanel(
       tags$li(tags$em("shinytoastr"), " – non-blocking toast notifications in Shiny apps"),
       tags$li(tags$em("DT"), " – interactive tables"),
       tags$li(tags$em("readxl"), " – reading Excel files"),
+      tags$li(tags$em("jsonlite"), " – reading and writing JSON files"),
+      tags$li(tags$em("openai"), " – interface to OpenAI API for AI features"),
+      tags$li(tags$em("commonmark"), " – Markdown parsing and rendering")
     ),
     
     h2("Authors and Contributors"),
