@@ -313,8 +313,6 @@ my_server <- function(
     output$upload_summary_table <- renderDT({
         req(upload_summary())
 
-        select_options <- c("integer", "numeric", "logical", "string", "character", "date", "POSIXct")
-
         datatable(
             upload_summary(),
             escape = FALSE,  
@@ -331,7 +329,7 @@ my_server <- function(
                            var options = ['%s'];
                            return renderDataTypeSelector(data, type, row, options);
                          }",
-                        paste(select_options, collapse = "','")
+                        paste(DATA_TYPE_OPTIONS, collapse = "','")
                     ))
                 ))
             ),
