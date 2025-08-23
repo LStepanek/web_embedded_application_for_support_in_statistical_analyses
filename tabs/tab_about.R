@@ -69,7 +69,7 @@ tab_about <- tabPanel(
     h2("Credits"),
     p(HTML("We gratefully acknowledge the authors and contributors of the open-source R packages used in this project, including <em>shiny</em>, <em>shinythemes</em>, <em>shinycssloaders</em>, <em>shinyjs</em>, <em>shinytoastr</em>, <em>DT</em>, <em>readxl</em>, <em>jsonlite</em>, <em>ggplot2</em>, <em>openai</em>, and <em>commonmark</em>.")),
     
-    p("Special thanks to Jaroslav Zacek (University of Ostrava) for his guidance and mentorship throughout the project."),
+    p("Special thanks to Dr. Jaroslav Zacek (University of Ostrava) for his guidance and mentorship throughout the project."),
     
     h2("License and Acknowledgements"),
     p("This application is distributed under the Creative Commons Attribution-NonCommercial-NoDerivatives 3.0 Czech Republic (CC BY-NC-ND 3.0 CZ) license."),
