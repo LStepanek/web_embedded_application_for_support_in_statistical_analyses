@@ -1065,6 +1065,37 @@ my_server <- function(
       })
     })
     
+    ## Populate and keep selectors mutually exclusive
+    observeEvent(my_data(), {
+      df <- my_data(); req(df)
+      numeric_vars <- names(df)[sapply(df, is.numeric)]
+      
+      # var1 choices
+      sel1 <- isolate(if (!is.null(input$ptt_var1) && input$ptt_var1 %in% numeric_vars) input$ptt_var1 else head(numeric_vars, 1))
+      updateSelectInput(session, "ptt_var1", choices = numeric_vars, selected = sel1)
+      
+      # var2 choices exclude var1
+      v2_choices <- setdiff(numeric_vars, sel1)
+      sel2 <- isolate(if (!is.null(input$ptt_var2) && input$ptt_var2 %in% v2_choices) input$ptt_var2 else head(v2_choices, 1))
+      updateSelectInput(session, "ptt_var2", choices = v2_choices, selected = sel2)
+    }, ignoreInit = FALSE)
+    
+    observeEvent(input$ptt_var1, {
+      df <- my_data(); req(df)
+      numeric_vars <- names(df)[sapply(df, is.numeric)]
+      v2_choices <- setdiff(numeric_vars, input$ptt_var1)
+      sel2 <- if (!is.null(input$ptt_var2) && input$ptt_var2 %in% v2_choices) input$ptt_var2 else head(v2_choices, 1)
+      updateSelectInput(session, "ptt_var2", choices = v2_choices, selected = sel2)
+    }, ignoreInit = TRUE)
+    
+    observeEvent(input$ptt_var2, {
+      df <- my_data(); req(df)
+      numeric_vars <- names(df)[sapply(df, is.numeric)]
+      v1_choices <- setdiff(numeric_vars, input$ptt_var2)
+      sel1 <- if (!is.null(input$ptt_var1) && input$ptt_var1 %in% v1_choices) input$ptt_var1 else head(v1_choices, 1)
+      updateSelectInput(session, "ptt_var1", choices = v1_choices, selected = sel1)
+    }, ignoreInit = TRUE)
+    
     ## --- helpers ----------------------------------------------------------------
     mean_ci <- function(x, conf.level = 0.95) {
       x <- x[is.finite(x)]
