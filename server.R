@@ -998,6 +998,23 @@ my_server <- function(
       }, error = function(e) NULL)
     })
     
+    ## --- Density plot -----------------------------------------------------------
+    
+    output$ttest_density <- renderPlot({
+      tryCatch({
+        df_loc <- ttest_local()
+        if (!requireNamespace("ggplot2", quietly = TRUE)) return(NULL)
+        library(ggplot2)
+        ggplot(df_loc, aes(x = y, fill = group)) +
+          geom_density(alpha = 0.4, adjust = 1) +
+          labs(
+            title = "Kernel density by group",
+            x = input$ttest_num_var,
+            y = "Density"
+          )
+      }, error = function(e) NULL)
+    })
+    
     
     ## ------------------------------------------------------------------------
     ## ------------------------------------------------------------------------

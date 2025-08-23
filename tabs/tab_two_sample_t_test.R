@@ -53,7 +53,8 @@ tab_two_sample_t_test <- tabPanel(
             uiOutput("ttest_interpretation"),
             HTML("<br>"),
             HTML("<br>"),
-            plotOutput("ttest_violin", height = "320px")
+            plotOutput("ttest_violin", height = "320px"),
+            plotOutput("ttest_density", height = "320px")
         )
     )
     
