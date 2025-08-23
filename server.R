@@ -132,9 +132,13 @@ my_server <- function(
           disable(selector = "#data_options input#header")
           disable(selector = "input[name='col_separator']")
 
-          json_lines <- readLines(fullpath, warn = FALSE)
-          data_list <- lapply(json_lines, function(line) jsonlite::fromJSON(line))
-          data <- as.data.frame(do.call(rbind, data_list), stringsAsFactors = FALSE)
+          json_file <- file(fullpath, "r")
+          data <- jsonlite::stream_in(json_file, verbose = FALSE)
+          close(json_file)
+
+          # Additional type conversion: attempt to automatically cast character columns 
+          # to more appropriate types (numeric, integer, logical, etc.)
+          data[] <- lapply(data, function(col) type.convert(col, as.is = TRUE))
 
         } else {
           # CSV/TXT/TSV
