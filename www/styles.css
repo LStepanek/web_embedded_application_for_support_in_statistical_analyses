@@ -23,9 +23,10 @@ h3 {
 }
 
 img.flowchart {
+  margin-top: 10px;
   width: 100%;
   height: auto;
-  max-width: 1200px;
+  max-width: 1300px;
   min-width: 200px;
   min-height: 150px;
 }
@@ -79,7 +80,7 @@ td.missing-cell {
   }
 
   h1:first-of-type {
-    margin-top: 0;
+    margin-top: 10px;
   }
 
   #panel-footer {
