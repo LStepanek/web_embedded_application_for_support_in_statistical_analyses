@@ -1,15 +1,20 @@
 // Function to enable or disable the 'statistic-methods' dropdown item in the navbar
-function setNavbarStatisticMethodsState(enabled) {
-  var item = $('.navbar-nav .dropdown [data-value="statistic-methods"]');
+function setNavbarItemsState(enabled) {
+  var itemsSelectors = [
+    '.navbar-nav .dropdown [data-value="statistic-methods"]',
+    '.navbar-nav [data-value="tab_ai_insight"]'
+  ];
+
+  var items = $(itemsSelectors.join(', '));
 
   if (enabled) {
-    item.removeClass('disabled')
-        .css('pointer-events', 'auto')
-        .css('opacity', '1');
+    items.removeClass('disabled')
+         .css('pointer-events', 'auto')
+         .css('opacity', '1');
   } else {
-    item.addClass('disabled')
-        .css('pointer-events', 'none')
-        .css('opacity', '0.5');
+    items.addClass('disabled')
+         .css('pointer-events', 'none')
+         .css('opacity', '0.5');
   }
 }
 
@@ -106,8 +111,8 @@ $(document).ready(function() {
 
 
   // allow Shiny to call this function
-  Shiny.addCustomMessageHandler("setNavbarStatisticMethodsState", function(enabled) {
-    setNavbarStatisticMethodsState(enabled);
+  Shiny.addCustomMessageHandler("setNavbarItemsState", function(enabled) {
+    setNavbarItemsState(enabled);
   });
 
 });

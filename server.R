@@ -92,7 +92,7 @@ my_server <- function(
         toastr_error(msg_error)
         showNotification(msg_error, type = "error")
 
-        session$sendCustomMessage("setNavbarStatisticMethodsState", FALSE)
+        session$sendCustomMessage("setNavbarItemsState", FALSE)
         return(NULL)
       }
 
@@ -166,7 +166,7 @@ my_server <- function(
         }
 
         if (!quiet) toastr_success(sprintf("The %s loaded successfully!", source_type_str))
-        session$sendCustomMessage("setNavbarStatisticMethodsState", TRUE)
+        session$sendCustomMessage("setNavbarItemsState", TRUE)
 
         # vše OK, uložíme si název souboru pro případný upload
         if (builtin) {
@@ -181,7 +181,7 @@ my_server <- function(
         msg_error <- sprintf("Error reading %s %s.", source_type_str, e$message)
         toastr_error(paste(msg_error))
         showNotification(msg_error, type = "error")
-        session$sendCustomMessage("setNavbarStatisticMethodsState", FALSE)
+        session$sendCustomMessage("setNavbarItemsState", FALSE)
 
         return(NULL)
       })
@@ -238,7 +238,7 @@ my_server <- function(
         # odškrtnutí vestavěného datasetu
         if (!is.null(builtin_file())) {
           toastr_info(paste("Built-in dataset", sQuote(builtin_file()), "was successfully unloaded."))
-          session$sendCustomMessage("setNavbarStatisticMethodsState", FALSE)
+          session$sendCustomMessage("setNavbarItemsState", FALSE)
           builtin_file(NULL)
           my_data(NULL)
         }
