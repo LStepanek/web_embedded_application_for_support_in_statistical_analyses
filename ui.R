@@ -146,17 +146,16 @@ my_ui <- shinyUI(
                 ## the first tab ----------------------------------------------
                 tab_introduction,
                 
-                
                 ## the second tab ---------------------------------------------
                 tab_flowchart,
-                
                 
                 ## the third tab ---------------------------------------------
                 tab_upload,
                 
-                
                 ## the fourth tab --------------------------------------------
-                
+                tab_ai_insight,
+
+                ## the fourth tab --------------------------------------------
                 navbarMenu(
                     
                     title = "Some methods (...)",
@@ -167,10 +166,8 @@ my_ui <- shinyUI(
                     ## method 1 ------------------------------------------------
                     tab_summary_plots,
                     
-                    
                     ## method 2 ------------------------------------------------
                     tab_method_2,
-					
 					
                     ## method 2 ------------------------------------------------
                     tab_two_sample_t_test
