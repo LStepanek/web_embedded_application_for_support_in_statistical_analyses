@@ -630,7 +630,7 @@ my_server <- function(
       tagList(
         tags$h4("Numeric variables — basic statistics"),
         div(class = "centered-table", tableOutput("summary_stats_numeric")),
-        div(class = "dl-row", downloadButton("download_stats_numeric", "Download numeric stats"))
+        div(class = "dl-row no-print", downloadButton("download_stats_numeric", "Download numeric stats"))
       )
     })
     output$summary_stats_numeric <- renderTable({
@@ -679,7 +679,7 @@ my_server <- function(
       tagList(
         tags$h4("Categorical variables — counts & levels"),
         div(class = "centered-table", tableOutput("summary_stats_categorical")),
-        div(class = "dl-row", downloadButton("download_stats_categorical", "Download categorical stats"))
+        div(class = "dl-row no-print", downloadButton("download_stats_categorical", "Download categorical stats"))
       )
     })
     output$summary_stats_categorical <- renderTable({
@@ -722,7 +722,7 @@ my_server <- function(
       tagList(
         tags$h4("Date/time variables — range"),
         div(class = "centered-table", tableOutput("summary_stats_dates")),
-        div(class = "dl-row", downloadButton("download_stats_dates", "Download date/time stats"))
+        div(class = "dl-row no-print", downloadButton("download_stats_dates", "Download date/time stats"))
       )
     })
     output$summary_stats_dates <- renderTable({
@@ -752,7 +752,7 @@ my_server <- function(
             style = "margin-top: 20px;",
             h5(var_name),
             plotOutput(outputId = paste0("plot_", sid), height = "300px"),
-            downloadButton(paste0("download_", sid), "Download Plot", class = "btn btn-primary")
+            downloadButton(paste0("download_", sid), "Download Plot", class = "btn btn-primary no-print")
           )
         )
       })
