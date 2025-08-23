@@ -188,6 +188,11 @@ my_server <- function(
             uploaded_file(name)
         }
 
+        # buď první načtení dat, nebo změna, chci odstranit odpověď od AI (pokud už byla)
+        output$ai_response <- renderUI({
+          NULL
+        })
+
         return(data)
 
       }, error = function(e) {
@@ -378,7 +383,7 @@ my_server <- function(
         )
       }
 
-      # vrátíme HTML
+      # markdown konvertuji a vrátím HTML
       output$ai_response <- renderUI({
         HTML(commonmark::markdown_html(md_text))
       })
@@ -387,10 +392,11 @@ my_server <- function(
 
 
 
-    # nikde se nevyužívá
+    # nikde se nevyužívá, volá se jen s prvním načtením dat (ne při změně datasetu)
     observeEvent(my_data(), {
       is_data_valid <- !is.null(my_data()) && nrow(my_data()) > 0 && ncol(my_data()) > 0
       #toastr_info(paste(!is.null(my_data())))
+
     })
 
 
