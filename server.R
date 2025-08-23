@@ -542,6 +542,8 @@ my_server <- function(
     
     
     ## ------------------------------------------------------------------------
+    ## ------------------------------------------------------------------------
+    ## ------------------------------------------------------------------------
     
     ## logic of the two-sample t-test -----------------------------------------
     
@@ -833,6 +835,152 @@ my_server <- function(
         
     })
     
+    ## --- helpers ---------------------------------------------------------------
+    
+    mean_ci <- function(x, conf.level = 0.95) {
+      x <- x[is.finite(x)]
+      n <- length(x)
+      m <- mean(x)
+      s <- stats::sd(x)
+      se <- s / sqrt(n)
+      alpha <- 1 - conf.level
+      tcrit <- stats::qt(1 - alpha/2, df = n - 1)
+      c(mean = m, lwr = m - tcrit * se, upr = m + tcrit * se, n = n)
+    }
+    
+    cohens_d_pooled <- function(x, g, order = NULL) {
+      # x numeric, g factor with 2 levels
+      stopifnot(length(levels(g)) == 2)
+      if (!is.null(order)) g <- factor(g, levels = order)
+      lvs <- levels(g)
+      x1 <- x[g == lvs[1]]
+      x2 <- x[g == lvs[2]]
+      n1 <- sum(is.finite(x1)); n2 <- sum(is.finite(x2))
+      m1 <- mean(x1, na.rm = TRUE); m2 <- mean(x2, na.rm = TRUE)
+      s1 <- stats::sd(x1, na.rm = TRUE); s2 <- stats::sd(x2, na.rm = TRUE)
+      s_pooled <- sqrt(((n1 - 1) * s1^2 + (n2 - 1) * s2^2) / (n1 + n2 - 2))
+      d <- (m1 - m2) / s_pooled
+      list(d = d, n1 = n1, n2 = n2, s_pooled = s_pooled, levels = lvs, m1 = m1, m2 = m2)
+    }
+    
+    describe_d <- function(d) {
+      ad <- abs(d)
+      if (is.na(ad)) return("unknown magnitude")
+      if (ad < 0.2) "negligible"
+      else if (ad < 0.5) "small"
+      else if (ad < 0.8) "medium"
+      else "large"
+    }
+    
+    ## --- common reactive to reuse cleaned data ---------------------------------
+    
+    ttest_local <- reactive({
+      df <- my_data()
+      req(df, input$ttest_num_var, input$ttest_group_var, input$ttest_selected_levels)
+      shiny::validate(need(length(input$ttest_selected_levels) == 2, "Select exactly two groups."))
+      y <- df[[input$ttest_num_var]]
+      g_raw <- df[[input$ttest_group_var]]
+      shiny::validate(need(is.numeric(y), "Selected outcome variable must be numeric."))
+      g <- as.factor(g_raw)
+      idx <- g %in% input$ttest_selected_levels
+      y <- y[idx]
+      g <- factor(g[idx], levels = input$ttest_selected_levels) # respect user order
+      shiny::validate(need(nlevels(g) == 2, "After subsetting, must have exactly 2 groups."))
+      data.frame(y = y, group = g)
+    })
+    
+    ## --- confidence intervals for group means ----------------------------------
+    
+    output$ttest_means_ci <- renderTable({
+      tryCatch({
+        df_loc <- ttest_local()
+        lvs <- levels(df_loc$group)
+        
+        ci1 <- mean_ci(df_loc$y[df_loc$group == lvs[1]])
+        ci2 <- mean_ci(df_loc$y[df_loc$group == lvs[2]])
+        
+        out <- data.frame(
+          Group = lvs,
+          n = c(ci1["n"], ci2["n"]),
+          Mean = round(c(ci1["mean"], ci2["mean"]), 3),
+          `95% CI` = c(
+            sprintf("(%0.3f, %0.3f)", ci1["lwr"], ci1["upr"]),
+            sprintf("(%0.3f, %0.3f)", ci2["lwr"], ci2["upr"])
+          ),
+          check.names = FALSE
+        )
+        out
+      }, error = function(e) NULL)
+    })
+    
+    ## --- Shapiro–Wilk normality per group --------------------------------------
+    
+    output$ttest_shapiro <- renderTable({
+      tryCatch({
+        df_loc <- ttest_local()
+        lvs <- levels(df_loc$group)
+        res <- lapply(lvs, function(L) {
+          x <- df_loc$y[df_loc$group == L]
+          if (sum(is.finite(x)) < 3) {
+            c(W = NA_real_, `p-value` = NA_real_, Note = "Needs at least 3 observations")
+          } else if (sum(is.finite(x)) > 5000) {
+            # Shapiro is defined for n <= 5000
+            c(W = NA_real_, `p-value` = NA_real_, Note = "n > 5000; test not computed")
+          } else {
+            s <- stats::shapiro.test(x)
+            c(W = unname(round(s$statistic, 3)), `p-value` = signif(s$p.value, 4), Note = "")
+          }
+        })
+        df <- do.call(rbind, res)
+        data.frame(Group = lvs, df, check.names = FALSE, row.names = NULL)
+      }, error = function(e) NULL)
+    })
+    
+    ## --- Cohen's d -------------------------------------------------------------
+    
+    output$ttest_effectsize <- renderTable({
+      tryCatch({
+        df_loc <- ttest_local()
+        cd <- cohens_d_pooled(df_loc$y, df_loc$group, order = levels(df_loc$group))
+        data.frame(
+          `Cohen's d (pooled SD)` = round(cd$d, 3),
+          `Magnitude` = describe_d(cd$d),
+          `Group order` = paste(cd$levels[1], "vs", cd$levels[2]),
+          check.names = FALSE
+        )
+      }, error = function(e) NULL)
+    })
+    
+    ## --- One-sentence interpretation -------------------------------------------
+    
+    output$ttest_interpretation <- renderUI({
+      tryCatch({
+        df_loc <- ttest_local()
+        test <- stats::t.test(
+          y ~ group, data = df_loc,
+          alternative = input$ttest_alt, mu = input$ttest_mu, var.equal = FALSE
+        )
+        cd <- cohens_d_pooled(df_loc$y, df_loc$group, order = levels(df_loc$group))
+        lvs <- levels(df_loc$group)
+        
+        direction <- if (is.na(cd$d)) "no clear difference" else if (cd$d > 0) paste0(lvs[1], " > ", lvs[2]) else paste0(lvs[1], " < ", lvs[2])
+        mag <- describe_d(cd$d)
+        sig <- if (is.na(test$p.value)) "with unclear significance" else if (test$p.value < 0.001) "and this difference is statistically significant (p < 0.001)"
+        else if (test$p.value < 0.05) "and this difference is statistically significant (p < 0.05)"
+        else "but this difference is not statistically significant (p ≥ 0.05)"
+        
+        sentence <- sprintf(
+          "On average, %s shows a %s effect (Cohen's d = %0.2f) in the direction %s, %s.",
+          input$ttest_num_var, mag, cd$d, direction, sig
+        )
+        HTML(paste("<b>Interpretation:</b> ", sentence))
+      }, error = function(e) NULL)
+    })
+    
+    
+    
+    ## ------------------------------------------------------------------------
+    ## ------------------------------------------------------------------------
     ## ------------------------------------------------------------------------
     
 }

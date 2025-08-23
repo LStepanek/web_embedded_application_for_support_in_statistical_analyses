@@ -44,7 +44,11 @@ tab_two_sample_t_test <- tabPanel(
         mainPanel(
             uiOutput("ttest_h0_statement"),
             tableOutput("ttest_result"),
-            plotOutput("ttest_boxplot")
+            plotOutput("ttest_boxplot"),
+            tableOutput("ttest_means_ci"),
+            tableOutput("ttest_shapiro"),
+            tableOutput("ttest_effectsize"),
+            uiOutput("ttest_interpretation")
         )
     )
     
