@@ -386,7 +386,96 @@ my_server <- function(
         
     })
     
-
+    
+    ## ------------------------------------------------------------------------
+    ## ------------------------------------------------------------------------
+    ## ------------------------------------------------------------------------
+    
+    ## Reusable helper for a nice banner
+    intro_box <- function(title, lead, bullets = NULL, note = NULL) {
+      tags$div(
+        style = "margin:8px 0 14px; padding:12px 14px; border:1px solid #cfe2ff; background:#f0f7ff; border-radius:8px;",
+        tags$div(style="font-weight:600; margin-bottom:6px;", title),
+        tags$p(style="margin:0 0 6px;", lead),
+        if (!is.null(bullets)) tags$ul(lapply(bullets, function(b) tags$li(b))),
+        if (!is.null(note)) tags$p(style="margin:8px 0 0; font-size:90%; color:#0b5394;", note)
+      )
+    }
+    
+    ## Two-sample t-test
+    output$ttest_intro <- renderUI({
+      intro_box(
+        "Two-sample t-test (independent groups)",
+        "Tests whether two independent group means differ (H₀: mean difference = μ, typically 0). Uses Welch’s t by default (no equal-variance assumption).",
+        bullets = c(
+          "Use for a numeric outcome and a 2-level grouping variable.",
+          "Assumptions: independent observations; roughly normal within groups (or large n).",
+          "Outputs here include: CI for mean diff, Cohen’s d, Shapiro–Wilk per group, box/violin/density plots, and a one-line interpretation."
+        )
+      )
+    })
+    
+    ## Paired t-test
+    output$ptt_intro <- renderUI({
+      intro_box(
+        "Paired t-test (within-subject / matched)",
+        "Tests whether the mean of within-pair differences equals μ (typically 0). This is for repeated measures on the same units.",
+        bullets = c(
+          "Use when you have two numeric measurements per subject (before/after, left/right, etc.).",
+          "Assumption: differences are approximately normal; pairs are independent.",
+          "Outputs: CI for mean diff, Cohen’s dz, Shapiro–Wilk on differences, boxplots (incl. differences), violin/density, and interpretation."
+        )
+      )
+    })
+    
+    ## Mann–Whitney (Wilcoxon rank-sum)
+    output$mw_intro <- renderUI({
+      intro_box(
+        "Mann–Whitney U (Wilcoxon rank-sum)",
+        "Nonparametric alternative to the two-sample t-test; assesses whether values in one group tend to be larger than the other.",
+        bullets = c(
+          "Use for two independent groups when normality is doubtful or you prefer rank-based inference.",
+          "Assumptions: independent samples; similar distribution shapes if interpreting as a location shift.",
+          "Outputs: Hodges–Lehmann location shift + CI, Cliff’s δ effect size, Shapiro per group (optional), and plots."
+        ),
+        note = "Tip: If shapes differ strongly, interpret results as stochastic dominance rather than a pure median shift."
+      )
+    })
+    
+    ## Paired Wilcoxon (signed-rank)
+    output$pwx_intro <- renderUI({
+      intro_box(
+        "Paired Wilcoxon signed-rank",
+        "Nonparametric paired test; checks if the median of within-pair differences equals μ (typically 0).",
+        bullets = c(
+          "Use when you have paired/repeated measures and want a rank-based alternative to the paired t-test.",
+          "Assumptions: paired differences are symmetrically distributed around the median; ignores zero differences.",
+          "Outputs: Hodges–Lehmann shift + CI, matched-pairs rank-biserial effect size, Shapiro on differences (diagnostic), and plots."
+        )
+      )
+    })
+    
+    ## One-way ANOVA
+    output$anova_intro <- renderUI({
+      intro_box(
+        "One-way ANOVA",
+        "Tests whether at least one group mean differs among 2+ groups using an F-test on between- vs within-group variability.",
+        bullets = c(
+          "Use for a numeric outcome and a factor with 2 or more levels (typically 3+).",
+          "Assumptions: independent observations; approximately normal residuals; homogeneous variances across groups.",
+          "Outputs: ANOVA table, group means + CIs, residual & per-group Shapiro, Bartlett/Levene, η² effect size, Tukey HSD (≥3 groups), and plots."
+        ),
+        note = "If assumptions look poor (e.g., strong non-normality or heteroscedasticity), consider transformations or a nonparametric alternative (e.g., Kruskal–Wallis)."
+      )
+    })
+    
+    
+    ## ------------------------------------------------------------------------
+    ## ------------------------------------------------------------------------
+    ## ------------------------------------------------------------------------
+    
+    ## logic of the summary plots table ---------------------------------------
+    
     # reactive function to get variable types ---------------------------------
     
     variable_types <- reactive({

@@ -27,6 +27,8 @@ tab_mann_whitney <- tabPanel(
       )
     ),
     mainPanel(
+	  uiOutput("mw_intro"),
+	  
       uiOutput("mw_selection_notice"),
       
       uiOutput("mw_h0_statement"),

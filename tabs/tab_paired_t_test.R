@@ -27,6 +27,7 @@ tab_paired_t_test <- tabPanel(
       )
     ),
     mainPanel(
+	  uiOutput("ptt_intro"),
       uiOutput("ptt_h0_statement"),
       tableOutput("ptt_result"),
       uiOutput("ptt_label_boxplot"),

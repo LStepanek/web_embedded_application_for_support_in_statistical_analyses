@@ -22,6 +22,8 @@ tab_anova <- tabPanel(
       )
     ),
     mainPanel(
+	  uiOutput("anova_intro"),
+	  
       uiOutput("anova_selection_notice"),
       uiOutput("anova_h0_statement"),
 
