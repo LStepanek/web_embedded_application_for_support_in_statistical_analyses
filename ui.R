@@ -9,6 +9,7 @@ for(
         
         "shiny",
         "shinyjs",
+        "shinycssloaders",
         "shinythemes",
         "shinytoastr",
         "DT"
