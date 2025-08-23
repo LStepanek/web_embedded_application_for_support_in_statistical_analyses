@@ -167,11 +167,14 @@ my_ui <- shinyUI(
                     tab_summary_plots,
                     
                     ## method 2 ------------------------------------------------
-                    tab_method_2,
-					
-                    ## method 2 ------------------------------------------------
-                    tab_two_sample_t_test
-					
+                    #tab_method_2,
+                    
+                    ## two-sample t-test ---------------------------------------
+                    tab_two_sample_t_test,
+                    
+                    ## two-sample t-test ---------------------------------------
+                    tab_paired_t_test
+                    
                     
                     ## --------------------------------------------------------
                     
