@@ -978,6 +978,26 @@ my_server <- function(
     })
     
     
+    ## --- Violin plot ------------------------------------------------------------
+    
+    output$ttest_violin <- renderPlot({
+      tryCatch({
+        df_loc <- ttest_local()
+        # lazy load ggplot2 if available
+        if (!requireNamespace("ggplot2", quietly = TRUE)) return(NULL)
+        library(ggplot2)
+        ggplot(df_loc, aes(x = group, y = y)) +
+          geom_violin(trim = FALSE, alpha = 0.6) +
+          geom_boxplot(width = 0.15, outlier.shape = NA) +
+          geom_jitter(width = 0.08, height = 0, alpha = 0.5, size = 1.6) +
+          labs(
+            title = "Violin + boxplot with raw points",
+            x = input$ttest_group_var,
+            y = input$ttest_num_var
+          )
+      }, error = function(e) NULL)
+    })
+    
     
     ## ------------------------------------------------------------------------
     ## ------------------------------------------------------------------------

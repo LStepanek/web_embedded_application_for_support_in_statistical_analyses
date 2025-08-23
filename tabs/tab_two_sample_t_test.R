@@ -48,7 +48,12 @@ tab_two_sample_t_test <- tabPanel(
             tableOutput("ttest_means_ci"),
             tableOutput("ttest_shapiro"),
             tableOutput("ttest_effectsize"),
-            uiOutput("ttest_interpretation")
+            HTML("<br>"),
+            HTML("<br>"),
+            uiOutput("ttest_interpretation"),
+            HTML("<br>"),
+            HTML("<br>"),
+            plotOutput("ttest_violin", height = "320px")
         )
     )
     
