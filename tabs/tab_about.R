@@ -36,15 +36,24 @@ tab_about <- tabPanel(
       tags$li(tags$em("DT"), " – interactive tables"),
       tags$li(tags$em("readxl"), " – reading Excel files"),
       tags$li(tags$em("jsonlite"), " – reading and writing JSON files"),
+      tags$li(tags$em("ggplot2"), " – data visualization and plotting system based on the Grammar of Graphics"),
       tags$li(tags$em("openai"), " – interface to OpenAI API for AI features"),
       tags$li(tags$em("commonmark"), " – Markdown parsing and rendering")
     ),
     
     h2("Authors and Contributors"),
-    p("Lead Developer: Lubomir Stepanek"),
+    p("We acknowledge the following contributors and their roles:"),
+    
     tags$ul(
-      tags$li("since November 23, 2024: Lubomir Stepanek and Michal Seda"),
-      tags$li("since February 22, 2025: Lubomir Stepanek, Michal Seda, and Milan Cizek")
+        tags$li(
+        tags$b("Lubomir Stepanek"), " – lead developer; project idea and conceptualization; R code creation; all logic of statistical procedures"
+      ),
+      tags$li(
+        tags$b("Milan Cizek"), " – conceptualization; enhanced dataset imports (JSON, TXT, TSV, XLS/XLSX); AI features integration; CSS & JavaScript; code optimization; hardware & backend maintenance (dedicated server setup, installation, CI deployment)"
+      ),
+      tags$li(
+        tags$b("Michal Seda"), " – contributions to feature development and testing"
+      )
     ),
     
     h2("Project repository"),
@@ -53,12 +62,12 @@ tab_about <- tabPanel(
     p("GitHub: ",
       a("https://github.com/LStepanek/web_embedded_application_for_support_in_statistical_analyses", 
         href = "https://github.com/LStepanek/web_embedded_application_for_support_in_statistical_analyses")),
-    p("Wiki: ",
+    p(HTML("Documentation & Wiki: "),
       a("https://github.com/LStepanek/web_embedded_application_for_support_in_statistical_analyses/wiki",
         href = "https://github.com/LStepanek/web_embedded_application_for_support_in_statistical_analyses/wiki")),
     
     h2("Credits"),
-    p(HTML("We gratefully acknowledge the authors and contributors of the open-source R packages used in this project, including <em>shiny</em>, <em>shinythemes</em>, <em>shinyjs</em>, <em>shinytoastr</em>, <em>DT</em>, and <em>readxl</em>.")),
+    p(HTML("We gratefully acknowledge the authors and contributors of the open-source R packages used in this project, including <em>shiny</em>, <em>shinythemes</em>, <em>shinycssloaders</em>, <em>shinyjs</em>, <em>shinytoastr</em>, <em>DT</em>, <em>readxl</em>, <em>jsonlite</em>, <em>ggplot2</em>, <em>openai</em>, and <em>commonmark</em>.")),
     
     p("Special thanks to Jaroslav Zacek (University of Ostrava) for his guidance and mentorship throughout the project."),
     
