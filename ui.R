@@ -40,31 +40,9 @@ for(
 
 ## I am loading all individual tabs -------------------------------------------
 
-my_global_working_directory <- getwd()
-
-setwd(
-    paste(
-        my_global_working_directory,
-        "tabs",
-        sep = "/"
-    )
-)
-
-for(
-    my_tab in dir()
-){
-    
-    source(
-        file = my_tab,
-        echo = FALSE,
-        encoding = "utf-8"
-    )
-    
+for (my_tab in list.files("tabs", pattern = "^tab_.*\\.R$", full.names = TRUE)) {
+    source(file = my_tab, encoding = "utf-8")
 }
-
-setwd(
-    my_global_working_directory
-)
 
 
 ## ----------------------------------------------------------------------------

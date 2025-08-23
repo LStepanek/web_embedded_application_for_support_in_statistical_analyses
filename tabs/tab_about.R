@@ -30,7 +30,7 @@ tab_about <- tabPanel(
     tags$ul(
       tags$li(tags$em("shiny"), " – main framework for interactive web apps"),
       tags$li(tags$em("shinythemes"), " – provides ready-to-use Bootstrap themes for Shiny apps"),
-      tags$li(tags$em("shinycssloaders"), " – add loading animations (spinners) to Shiny outputs while computations are running")
+      tags$li(tags$em("shinycssloaders"), " – add loading animations (spinners) to Shiny outputs while computations are running"),
       tags$li(tags$em("shinyjs"), " – JavaScript enhancements for Shiny"),
       tags$li(tags$em("shinytoastr"), " – non-blocking toast notifications in Shiny apps"),
       tags$li(tags$em("DT"), " – interactive tables"),
