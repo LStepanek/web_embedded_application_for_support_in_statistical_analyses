@@ -179,7 +179,10 @@ my_ui <- shinyUI(
                     tab_mann_whitney,
                     
                     ## Mann-Whitney test --------------------------------------
-                    tab_paired_wilcoxon
+                    tab_paired_wilcoxon,
+                    
+                    ## Mann-Whitney test --------------------------------------
+                    tab_anova
                     
                     ## --------------------------------------------------------
                     
