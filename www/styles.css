@@ -64,8 +64,9 @@ td.missing-cell {
   top: 60px !important;
 }
 
-/* statistic-methods dropdown menu is disabled by default */
-.navbar-nav .dropdown [data-value="statistic-methods"] {
+/* AI tab & statistic-methods dropdown menu are disabled by default */
+.navbar-nav .dropdown [data-value="statistic-methods"],
+.navbar-nav [data-value="tab_ai_insight"] {
   pointer-events: none;
   opacity: 0.5;
 }
