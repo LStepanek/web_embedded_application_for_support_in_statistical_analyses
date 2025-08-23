@@ -1,7 +1,7 @@
-// Function to enable or disable the 'statistic-methods' dropdown item in the navbar
+// Function to enable or disable the 'statistical-methods' dropdown item in the navbar
 function setNavbarItemsState(enabled) {
   var itemsSelectors = [
-    '.navbar-nav .dropdown [data-value="statistic-methods"]',
+    '.navbar-nav .dropdown [data-value="statistical-methods"]',
     '.navbar-nav [data-value="tab_ai_insight"]'
   ];
 

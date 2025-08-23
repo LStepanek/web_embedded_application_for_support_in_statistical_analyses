@@ -159,7 +159,7 @@ my_ui <- shinyUI(
                 navbarMenu(
                     
                     title = "Statistical methods",
-                    menuName = "statistic-methods",  
+                    menuName = "statistical-methods",  
                     
                     ###########################################################
                     
