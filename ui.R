@@ -2,40 +2,23 @@
 ###############################################################################
 ###############################################################################
 
+
+## I am loading a module with user-defined functions --------------------------
+
+source(
+    file = "functions.R",
+    echo = FALSE,
+    encoding = "UTF-8"
+)
+
+
 ## I am loading packages ------------------------------------------------------
 
-for(
-    my_package in c(
-        
-        "shiny",
-        "shinyjs",
-        "shinycssloaders",
-        "shinythemes",
-        "shinytoastr",
-        "DT"
-    )
-){
-    
-    if(
-        !(
-            my_package %in% rownames(installed.packages())
-        )
-    ){
-        
-        install.packages(
-            my_package,
-            dependencies = TRUE,
-            repos = "https://cloud.r-project.org"
-        )
-        
-    }
-    
-    library(
-        my_package,
-        character.only = TRUE
-    )
-    
-}
+# List of packages to be installed and loaded
+required_packages <- c("shiny", "shinyjs", "shinycssloaders", "shinythemes", "shinytoastr", "DT")
+
+# Call the function to install and load the packages
+install_and_load_packages(required_packages)
 
 
 ## I am loading all individual tabs -------------------------------------------
