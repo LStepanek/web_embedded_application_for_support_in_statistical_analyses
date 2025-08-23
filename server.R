@@ -889,6 +889,32 @@ my_server <- function(
       data.frame(y = y, group = g)
     })
     
+    # Labels that show only when data exists
+    output$ttest_label_means_ci <- renderUI({
+      df_loc <- try(ttest_local(), silent = TRUE)
+      req(!inherits(df_loc, "try-error"), nrow(df_loc) > 0)
+      tags$h4("Confidence intervals for group means")
+    })
+
+    output$ttest_label_shapiro <- renderUI({
+      df_loc <- try(ttest_local(), silent = TRUE)
+      req(!inherits(df_loc, "try-error"), nrow(df_loc) > 2)  # need at least 3 per group for Shapiro
+      tags$h4("Normality check (Shapiro–Wilk test)")
+    })
+
+    output$ttest_label_effectsize <- renderUI({
+      df_loc <- try(ttest_local(), silent = TRUE)
+      req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
+      tags$h4("Effect size (Cohen's d)")
+    })
+    
+    output$ttest_label_interpretation <- renderUI({
+      df_loc <- try(ttest_local(), silent = TRUE)
+      req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
+      tags$h4("Interpretation")
+    })
+    
+    
     ## --- confidence intervals for group means ----------------------------------
     
     output$ttest_means_ci <- renderTable({
@@ -997,6 +1023,7 @@ my_server <- function(
           )
       }, error = function(e) NULL)
     })
+    
     
     ## --- Density plot -----------------------------------------------------------
     
