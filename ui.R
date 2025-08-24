@@ -52,6 +52,7 @@ my_ui <- shinyUI(
             tags$head(
                 tags$link(rel = "icon", type = "image/png", href = "favicon.png"),
                 tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
+                tags$link(rel = "stylesheet", type = "text/css", href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"),
                 tags$script(src = "functions.js")
             ),
             

@@ -69,6 +69,11 @@ td.missing-cell {
 }
 
 
+.external-link-icon {
+  font-size: 0.8em;  /* zmenší ikonu na 80% velikosti textu */
+  margin-left: 4px;  /* malé odsazení od textu */
+}
+
 #panel-footer {
   font-size: 1em;
   position: fixed;

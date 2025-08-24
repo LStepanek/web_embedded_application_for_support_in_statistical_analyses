@@ -491,7 +491,7 @@ my_server <- function(
     ## Two-sample t-test
     output$ttest_intro <- renderUI({
       intro_box(
-        "Two-sample t-test (independent groups)",
+        HTML("Two-sample <em>t</em>-test (independent groups)"),
         "Tests whether two independent group means differ (H₀: mean difference = μ, typically 0). Uses Welch’s t by default (no equal-variance assumption).",
         bullets = c(
           "Use for a numeric outcome and a 2-level grouping variable.",
@@ -504,7 +504,7 @@ my_server <- function(
     ## Paired t-test
     output$ptt_intro <- renderUI({
       intro_box(
-        "Paired t-test (within-subject / matched)",
+        HTML("Paired <em>t</em>-test (within-subject / matched)"),
         "Tests whether the mean of within-pair differences equals μ (typically 0). This is for repeated measures on the same units.",
         bullets = c(
           "Use when you have two numeric measurements per subject (before/after, left/right, etc.).",
