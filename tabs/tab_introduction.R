@@ -5,21 +5,21 @@
 ## introduction tab -----------------------------------------------------------
 
 tab_introduction <- tabPanel(
-    
+
     title = "Introduction",
-    
+
     value = "tab_introduction",
-    
+
     # Purpose section
     tags$h1("A purpose of this application"),
 
     tags$p("Hello and welcome to the application for support in statistical analyses! This tool helps you explore datasets, perform statistical tests, and get AI-powered insights."),
 
     tags$p("This application was developed as a study project to assist users in exploring, analyzing, and understanding datasets with minimal manual effort. It combines traditional statistical analyses with AI-powered insights, helping users identify patterns, trends, and anomalies quickly. The goal is to support data-driven decision-making, educational purposes, and self-service data analysis for students, researchers, and analysts."),
-    
+
     # Key features section
     tags$h2("Key features"),
-    
+
     tags$ul(
       tags$li(tags$b("Supported dataset file formats:"),
               tags$ul(
@@ -99,7 +99,7 @@ tab_introduction <- tabPanel(
                        class = "no-bullet-indent")
       )
     ),
-    
+
     # Footnote or limitation note
     tags$p(tags$em(tags$small("* Currently, only the first sheet of Excel files is supported due to application limitations.")))
 )

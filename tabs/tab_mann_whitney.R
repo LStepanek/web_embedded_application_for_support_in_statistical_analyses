@@ -28,9 +28,9 @@ tab_mann_whitney <- tabPanel(
     ),
     mainPanel(
 	  uiOutput("mw_intro"),
-	  
+
       uiOutput("mw_selection_notice"),
-      
+
       uiOutput("mw_h0_statement"),
       tableOutput("mw_result"),
 
@@ -45,7 +45,7 @@ tab_mann_whitney <- tabPanel(
 
       uiOutput("mw_label_effectsize"),
       tableOutput("mw_effectsize"),
-      
+
       uiOutput("mw_label_interpretation"),
       uiOutput("mw_interpretation"),
 

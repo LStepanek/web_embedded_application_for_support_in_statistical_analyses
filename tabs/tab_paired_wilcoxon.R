@@ -27,7 +27,7 @@ tab_paired_wilcoxon <- tabPanel(
     ),
     mainPanel(
 	  uiOutput("pwx_intro"),
-	  
+
       uiOutput("pwx_h0_statement"),
       tableOutput("pwx_result"),
 
@@ -45,7 +45,7 @@ tab_paired_wilcoxon <- tabPanel(
 
       uiOutput("pwx_label_effectsize"),
       tableOutput("pwx_effectsize"),
-      
+
       uiOutput("pwx_label_interpretation"),
       uiOutput("pwx_interpretation"),
 

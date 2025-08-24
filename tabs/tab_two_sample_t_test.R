@@ -5,13 +5,13 @@
 ## method 1 tab ---------------------------------------------------------------
 
 tab_two_sample_t_test <- tabPanel(
-    
+
     title = HTML("Two-sample <i>t</i>-test"),
-    
+
     value = "tab_two_sample_t_test",
-    
+
     HTML("<h1>Two-sample <i>t</i>-test</h1>"),
-    
+
     sidebarLayout(
         sidebarPanel(
             conditionalPanel(
@@ -65,7 +65,7 @@ tab_two_sample_t_test <- tabPanel(
             plotOutput("ttest_density", height = "320px")
         )
     )
-    
+
 )
 
 

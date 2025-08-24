@@ -5,11 +5,11 @@
 ## decision-making flowchart tab ----------------------------------------------
 
 tab_flowchart <- tabPanel(
-    
+
     title = "Decision-making flowchart",
-    
+
     value = "tab_flowchart",
-    
+
     h1("Decision-making flowchart"),
 
     p(HTML(

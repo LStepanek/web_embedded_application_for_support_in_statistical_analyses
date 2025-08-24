@@ -5,15 +5,15 @@
 ## upload tab -----------------------------------------------------------------
 
 tab_upload <- tabPanel(
-    
+
     title = "Data upload",
-    
+
     value = "tab_upload",
-    
+
     h1("Data upload"),
-    
+
     fluidRow(
-        
+
         column(
             width = 3,
             fileInput(
@@ -52,12 +52,12 @@ tab_upload <- tabPanel(
                 )
             )
         ),
-        
+
         column(
             width = 3,
             radioButtons(
                 "col_separator",
-                "Separator", 
+                "Separator",
                 choices = c(
                     "Comma" = ",",
                     "Semicolon" = ";",
@@ -66,7 +66,7 @@ tab_upload <- tabPanel(
                 selected = ","
             )
         ),
-        
+
         column(
             width = 3,
             textInput(
@@ -75,12 +75,12 @@ tab_upload <- tabPanel(
                 placeholder = "e.g., NSSLD"
             )
         ),
-        
+
     ),
-    
-    
+
+
     ## dynamically render labels & tables -------------------------------------
-    
+
     fluidRow(
         column(
             width = 12,
@@ -88,9 +88,9 @@ tab_upload <- tabPanel(
             DTOutput("data_table")
         )
     ),
-    
+
     ## upload summary table ---------------------------------------------------
-    
+
     fluidRow(
         column(
             width = 6,
@@ -99,7 +99,7 @@ tab_upload <- tabPanel(
             DTOutput("upload_summary_table")
         )
     ),
-    
+
 )
 
 
