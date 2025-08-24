@@ -47,7 +47,7 @@ tab_introduction <- tabPanel(
                 tags$li(
                   HTML("Paired <em>t</em>-test"),
                   tags$a(
-                    href = "https://en.wikipedia.org/wiki/Student%27s_t-test#Paired_t-test",
+                    href = "https://en.wikipedia.org/wiki/Student%27s_t-test#Dependent_t-test_for_paired_samples",
                     target = "_blank",
                     rel = "nofollow",
                     tags$i(class = "fas fa-external-link-alt external-link-icon")
@@ -65,7 +65,7 @@ tab_introduction <- tabPanel(
                 tags$li(
                   "Paired Wilcoxon test",
                   tags$a(
-                    href = "https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test",
+                    href = "https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test#Paired_data_test",
                     target = "_blank",
                     rel = "nofollow",
                     tags$i(class = "fas fa-external-link-alt external-link-icon")
