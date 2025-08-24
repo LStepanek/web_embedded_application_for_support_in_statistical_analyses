@@ -165,19 +165,6 @@ my_server <- function(
           # disablovat volbu pro řešení missingů
         }
 
-        col_types_vec <- unlist(strsplit(col_types, ""))
-        if (length(col_types_vec) == ncol(data)) {
-          data <- mapply(function(col, type) {
-            switch(type,
-                   "N" = as.numeric(col),
-                   "S" = as.character(col),
-                   "D" = as.Date(col),
-                   "L" = as.logical(col),
-                   col)
-          }, data, col_types_vec, SIMPLIFY = FALSE)
-          data <- as.data.frame(data)
-        }
-
         if (!quiet) toastr_success(sprintf("The %s loaded successfully!", source_type_str))
         session$sendCustomMessage("setNavbarItemsState", TRUE)
 
@@ -755,7 +742,6 @@ my_server <- function(
         sid <- safe_id(var_name)
         tagList(
           div(
-            style = "margin-top: 20px;",
             h3(var_name),
             plotOutput(outputId = paste0("plot_", sid), height = "300px"),
             downloadButton(paste0("download_", sid), "Download Plot", class = "btn no-print")
@@ -1724,7 +1710,7 @@ my_server <- function(
       
       # pretty, non-intrusive banner
       tags$div(
-        style = "margin:8px 0; padding:10px 12px; border:1px solid #ffe08a; background:#fff7df; border-radius:6px;",
+        class = "alert alert-warning",
         tags$b("Select exactly two groups"),
         tags$span(" – please choose two groups in the sidebar to run the test.")
       )
@@ -2546,7 +2532,7 @@ my_server <- function(
       sels <- input$anova_selected_levels
       if (is.null(sels) || length(sels) < 2) {
         tags$div(
-          style = "margin:8px 0; padding:10px 12px; border:1px solid #ffe08a; background:#fff7df; border-radius:6px;",
+          class = "alert alert-warning",
           tags$b("Select at least two groups"),
           tags$span(" – please choose two or more groups in the sidebar to run ANOVA.")
         )
