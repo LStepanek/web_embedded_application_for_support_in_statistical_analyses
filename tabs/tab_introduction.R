@@ -101,7 +101,32 @@ tab_introduction <- tabPanel(
     ),
 
     # Footnote or limitation note
-    tags$p(tags$em(tags$small("* Currently, only the first sheet of Excel files is supported due to application limitations.")))
+    tags$p(tags$em(tags$small("* Currently, only the first sheet of Excel files is supported due to application limitations."))),
+
+    # Dataset sources section
+    tags$h2("Dataset Sources"),
+
+    tags$div(class = "intro-box",
+      tags$p(class = "intro-lead",
+        HTML("<i><strong>Note:</strong> If you don’t have your own datasets but want to explore the features of our application, ",
+             "you can either use the built-in example datasets or access publicly available sample datasets. ",
+             "These external datasets can help you test data import, analysis, and visualization capabilities ",
+             "without needing to prepare your own data in advance. Here are some recommended sources for sample datasets:</i>")
+      ),
+      tags$ul(
+        tags$li(
+          tags$b("NDJSON datasets: "), 
+          tags$a(href = "https://www.tablab.app/json/sample", "Tablab sample datasets", target = "_blank", rel = "nofollow"),
+          " – provides ready-to-use NDJSON-formatted datasets."
+        ),
+        tags$li(
+          tags$b("CSV datasets: "), 
+          tags$a(href = "https://www.kaggle.com/datasets", "Kaggle Datasets", target = "_blank", rel = "nofollow"),
+          " – a large collection of CSV and other formats for various topics and domains."
+        )
+      )
+    )
+
 )
 
 
