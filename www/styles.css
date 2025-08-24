@@ -1,5 +1,5 @@
 body {
-  padding-bottom: 80px !important; /* Zajistí, že obsah se neposune pod footer */
+  padding-bottom: 80px !important;
   box-sizing: border-box;
 }
 
@@ -23,8 +23,8 @@ h3 {
 }
 
 .no-bullet-indent {
-  margin-left: 1.2em; /* odsazení od hlavní položky */
-  list-style: none;   /* odstraní bullet, pokud by byl */
+  margin-left: 1.2em;
+  list-style: none;
 }
 
 img.flowchart {
@@ -70,8 +70,8 @@ td.missing-cell {
 
 
 .external-link-icon {
-  font-size: 0.8em;  /* zmenší ikonu na 80% velikosti textu */
-  margin-left: 4px;  /* malé odsazení od textu */
+  font-size: 0.8em;
+  margin-left: 4px;
 }
 
 #panel-footer {

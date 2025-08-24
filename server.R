@@ -634,7 +634,7 @@ my_server <- function(
       tbl <- numeric_stats()
       if (is.null(tbl) || nrow(tbl) == 0) return(NULL)
       tagList(
-        tags$h4("Numeric variables – basic statistics"),
+        tags$h2("Numeric variables – basic statistics"),
         div(class = "centered-table", tableOutput("summary_stats_numeric")),
         div(class = "dl-row no-print", downloadButton("download_stats_numeric", "Download numeric stats"))
       )
@@ -683,7 +683,7 @@ my_server <- function(
       tbl <- categorical_stats()
       if (is.null(tbl) || nrow(tbl) == 0) return(NULL)
       tagList(
-        tags$h4("Categorical variables – counts & levels"),
+        tags$h2("Categorical variables – counts & levels"),
         div(class = "centered-table", tableOutput("summary_stats_categorical")),
         div(class = "dl-row no-print", downloadButton("download_stats_categorical", "Download categorical stats"))
       )
@@ -726,7 +726,7 @@ my_server <- function(
       tbl <- date_stats()
       if (is.null(tbl) || nrow(tbl) == 0) return(NULL)
       tagList(
-        tags$h4("Date/time variables – range"),
+        tags$h2("Date/time variables – range"),
         div(class = "centered-table", tableOutput("summary_stats_dates")),
         div(class = "dl-row no-print", downloadButton("download_stats_dates", "Download date/time stats"))
       )
@@ -756,9 +756,9 @@ my_server <- function(
         tagList(
           div(
             style = "margin-top: 20px;",
-            h5(var_name),
+            h3(var_name),
             plotOutput(outputId = paste0("plot_", sid), height = "300px"),
-            downloadButton(paste0("download_", sid), "Download Plot", class = "btn btn-primary no-print")
+            downloadButton(paste0("download_", sid), "Download Plot", class = "btn no-print")
           )
         )
       })
@@ -1233,25 +1233,25 @@ my_server <- function(
     output$ttest_label_means_ci <- renderUI({
       df_loc <- try(ttest_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 0)
-      tags$h4("Confidence intervals for group means")
+      tags$h2("Confidence intervals for group means")
     })
 
     output$ttest_label_shapiro <- renderUI({
       df_loc <- try(ttest_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 2)  # need at least 3 per group for Shapiro
-      tags$h4("Normality check (Shapiro–Wilk test)")
+      tags$h2("Normality check (Shapiro–Wilk test)")
     })
 
     output$ttest_label_effectsize <- renderUI({
       df_loc <- try(ttest_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Effect size (Cohen's d)")
+      tags$h2("Effect size (Cohen's d)")
     })
     
     output$ttest_label_interpretation <- renderUI({
       df_loc <- try(ttest_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Interpretation")
+      tags$h2("Interpretation")
     })
     
     
@@ -1526,13 +1526,13 @@ my_server <- function(
     output$ptt_label_boxplot <- renderUI({
       df_loc <- try(ptt_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Boxplot of the two paired variables")
+      tags$h2("Boxplot of the two paired variables")
     })
     
     output$ptt_label_boxplot_diff <- renderUI({
       df_loc <- try(ptt_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Boxplot of paired differences")
+      tags$h2("Boxplot of paired differences")
     })
     
     # ---- Boxplot: variables side-by-side ----
@@ -1577,7 +1577,7 @@ my_server <- function(
     output$ptt_label_means_ci <- renderUI({
       df_loc <- try(ptt_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 0)
-      tags$h4("Confidence intervals for each mean")
+      tags$h2("Confidence intervals for each mean")
     })
     
     output$ptt_means_ci <- renderTable({
@@ -1601,7 +1601,7 @@ my_server <- function(
     output$ptt_label_shapiro <- renderUI({
       df_loc <- try(ptt_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) >= 3)  # Shapiro needs >= 3
-      tags$h4("Normality check on paired differences (Shapiro–Wilk)")
+      tags$h2("Normality check on paired differences (Shapiro–Wilk)")
     })
     
     output$ptt_shapiro <- renderTable({
@@ -1626,7 +1626,7 @@ my_server <- function(
     output$ptt_label_effectsize <- renderUI({
       df_loc <- try(ptt_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Effect size (Cohen’s d for paired data, dz)")
+      tags$h2("Effect size (Cohen’s d for paired data, dz)")
     })
     
     output$ptt_effectsize <- renderTable({
@@ -1645,7 +1645,7 @@ my_server <- function(
     output$ptt_label_interpretation <- renderUI({
       df_loc <- try(ptt_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Interpretation")
+      tags$h2("Interpretation")
     })
     
     output$ptt_interpretation <- renderUI({
@@ -1911,7 +1911,7 @@ my_server <- function(
     output$mw_label_boxplot <- renderUI({
       df_loc <- try(mw_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Boxplot of selected groups")
+      tags$h2("Boxplot of selected groups")
     })
     
     # ---- Boxplot: variables side-by-side ----
@@ -1944,7 +1944,7 @@ my_server <- function(
     output$mw_label_means_ci <- renderUI({
       df_loc <- try(mw_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 0)
-      tags$h4("Confidence intervals for group means")
+      tags$h2("Confidence intervals for group means")
     })
     
     output$mw_means_ci <- renderTable({
@@ -1970,7 +1970,7 @@ my_server <- function(
     output$mw_label_shapiro <- renderUI({
       df_loc <- try(mw_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 2)
-      tags$h4("Normality check per group (Shapiro–Wilk)")
+      tags$h2("Normality check per group (Shapiro–Wilk)")
     })
     
     output$mw_shapiro <- renderTable({
@@ -1997,7 +1997,7 @@ my_server <- function(
     output$mw_label_effectsize <- renderUI({
       df_loc <- try(mw_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Effect size (Cliff’s delta / rank-biserial)")
+      tags$h2("Effect size (Cliff’s delta / rank-biserial)")
     })
     
     # ---- Effect size table (Cliff's δ) ----
@@ -2025,7 +2025,7 @@ my_server <- function(
     output$mw_label_interpretation <- renderUI({
       df_loc <- try(mw_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1)
-      tags$h4("Interpretation")
+      tags$h2("Interpretation")
     })
     
     # Robust interpretation (blank until ready; no errors on ties/NAs)
@@ -2288,7 +2288,7 @@ my_server <- function(
     ## ---- labels + CI table for each mean ---------------------------------------
     output$pwx_label_means_ci <- renderUI({
       req(pwx_ready(), cancelOutput = TRUE)
-      tags$h4("Confidence intervals for each mean")
+      tags$h2("Confidence intervals for each mean")
     })
     
     output$pwx_means_ci <- renderTable({
@@ -2311,7 +2311,7 @@ my_server <- function(
     output$pwx_label_shapiro <- renderUI({
       # Only show if we’ll likely be able to compute (needs >= 3 non-zero ideally)
       if (!isTRUE(try(pwx_ready(), silent = TRUE))) return(NULL)
-      tags$h4("Normality check on paired differences (Shapiro–Wilk)")
+      tags$h2("Normality check on paired differences (Shapiro–Wilk)")
     })
     
     output$pwx_shapiro <- renderTable({
@@ -2334,7 +2334,7 @@ my_server <- function(
     ## ---- labels + Effect size (matched-pairs rank-biserial) --------------------
     output$pwx_label_effectsize <- renderUI({
       req(pwx_ready(), cancelOutput = TRUE)
-      tags$h4("Effect size (matched-pairs rank-biserial)")
+      tags$h2("Effect size (matched-pairs rank-biserial)")
     })
     
     output$pwx_effectsize <- renderTable({
@@ -2351,7 +2351,7 @@ my_server <- function(
     ## ---- labels + Interpretation line ------------------------------------------
     output$pwx_label_interpretation <- renderUI({
       req(pwx_ready(), cancelOutput = TRUE)
-      tags$h4("Interpretation")
+      tags$h2("Interpretation")
     })
     
     output$pwx_interpretation <- renderUI({
@@ -2394,7 +2394,7 @@ my_server <- function(
     output$pwx_label_boxplot <- renderUI({
       df_loc <- try(pwx_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1, cancelOutput = TRUE)
-      tags$h4("Boxplot of the two paired variables")
+      tags$h2("Boxplot of the two paired variables")
     })
     
     output$pwx_boxplot <- renderPlot({
@@ -2415,7 +2415,7 @@ my_server <- function(
     output$pwx_label_boxplot_diff <- renderUI({
       df_loc <- try(pwx_local(), silent = TRUE)
       req(!inherits(df_loc, "try-error"), nrow(df_loc) > 1, cancelOutput = TRUE)
-      tags$h4("Boxplot of paired differences")
+      tags$h2("Boxplot of paired differences")
     })
     
     output$pwx_boxplot_diff <- renderPlot({
@@ -2571,7 +2571,7 @@ my_server <- function(
       stats::aov(y ~ group, data = df_loc)
     })
     
-    output$anova_label_table <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h4("ANOVA table") })
+    output$anova_label_table <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h2("ANOVA table") })
     
     output$anova_table <- renderTable({
       req(anova_ready(), cancelOutput = TRUE)
@@ -2590,7 +2590,7 @@ my_server <- function(
     })
     
     ## Boxplot
-    output$anova_label_boxplot <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h4("Boxplot of selected groups") })
+    output$anova_label_boxplot <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h2("Boxplot of selected groups") })
     output$anova_boxplot <- renderPlot({
       req(anova_ready(), cancelOutput = TRUE)
       df_loc <- anova_local()
@@ -2607,7 +2607,7 @@ my_server <- function(
     })
     
     ## Group means + CIs
-    output$anova_label_means_ci <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h4("Confidence intervals for group means") })
+    output$anova_label_means_ci <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h2("Confidence intervals for group means") })
     output$anova_means_ci <- renderTable({
       req(anova_ready(), cancelOutput = TRUE)
       df_loc <- anova_local()
@@ -2626,7 +2626,7 @@ my_server <- function(
     })
     
     ## Assumption checks
-    output$anova_label_assumptions <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h4("Assumption checks") })
+    output$anova_label_assumptions <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h2("Assumption checks") })
     
     # Shapiro–Wilk on residuals
     output$anova_shapiro_resid <- renderTable({
@@ -2685,7 +2685,7 @@ my_server <- function(
     })
     
     ## Effect size (eta-squared)
-    output$anova_label_effectsize <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h4("Effect size (eta-squared)") })
+    output$anova_label_effectsize <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h2("Effect size (eta-squared)") })
     output$anova_effectsize <- renderTable({
       req(anova_ready(), cancelOutput = TRUE)
       sm <- summary(anova_fit())[[1]]
@@ -2704,7 +2704,7 @@ my_server <- function(
       req(anova_ready(), cancelOutput = TRUE)
       df_loc <- anova_local()
       if (nlevels(df_loc$group) < 3) return(NULL)
-      tags$h4("Post-hoc pairwise comparisons (Tukey HSD)")
+      tags$h2("Post-hoc pairwise comparisons (Tukey HSD)")
     })
     
     output$anova_tukey <- renderTable({
@@ -2740,7 +2740,7 @@ my_server <- function(
     })
     
     ## Interpretation
-    output$anova_label_interpretation <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h4("Interpretation") })
+    output$anova_label_interpretation <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h2("Interpretation") })
     output$anova_interpretation <- renderUI({
       req(anova_ready(), cancelOutput = TRUE)
       df_loc <- anova_local()
