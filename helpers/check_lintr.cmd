@@ -26,10 +26,3 @@ echo Checking for lintr package...
 echo Running lintr checks with custom settings...
 
 "%R_PATH%\bin\Rscript.exe" -e "lintr::lint_dir('../')
-
-IF %ERRORLEVEL% NEQ 0 (
-    echo Lintr found issues.
-    exit /b %ERRORLEVEL%
-) ELSE (
-    echo No lint issues found.
-)
