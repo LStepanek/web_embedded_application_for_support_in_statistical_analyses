@@ -6,7 +6,7 @@
 
 tab_two_sample_t_test <- tabPanel(
     
-    title = "Two-sample t-test",
+    title = HTML("Two-sample <i>t</i>-test"),
     
     value = "tab_two_sample_t_test",
     

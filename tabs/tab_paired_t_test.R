@@ -5,7 +5,7 @@
 ## paired t-test tab ----------------------------------------------------------
 
 tab_paired_t_test <- tabPanel(
-  title = "Paired t-test",
+  title = HTML("Paired <i>t</i>-test"),
   value = "tab_paired_t_test",
   HTML("<h1>Paired <i>t</i>-test</h1>"),
   sidebarLayout(

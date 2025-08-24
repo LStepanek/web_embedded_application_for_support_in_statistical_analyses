@@ -480,11 +480,11 @@ my_server <- function(
     ## Reusable helper for a nice banner
     intro_box <- function(title, lead, bullets = NULL, note = NULL) {
       tags$div(
-        style = "margin:8px 0 14px; padding:12px 14px; border:1px solid #cfe2ff; background:#f0f7ff; border-radius:8px;",
-        tags$div(style="font-weight:600; margin-bottom:6px;", title),
-        tags$p(style="margin:0 0 6px;", lead),
+        class = "intro-box",
+        tags$div(class = "intro-title", title),
+        tags$p(class = "intro-lead", lead),
         if (!is.null(bullets)) tags$ul(lapply(bullets, function(b) tags$li(b))),
-        if (!is.null(note)) tags$p(style="margin:8px 0 0; font-size:90%; color:#0b5394;", note)
+        if (!is.null(note)) tags$p(class = "intro-note", note)
       )
     }
     
@@ -634,7 +634,7 @@ my_server <- function(
       tbl <- numeric_stats()
       if (is.null(tbl) || nrow(tbl) == 0) return(NULL)
       tagList(
-        tags$h4("Numeric variables — basic statistics"),
+        tags$h4("Numeric variables – basic statistics"),
         div(class = "centered-table", tableOutput("summary_stats_numeric")),
         div(class = "dl-row no-print", downloadButton("download_stats_numeric", "Download numeric stats"))
       )
@@ -683,7 +683,7 @@ my_server <- function(
       tbl <- categorical_stats()
       if (is.null(tbl) || nrow(tbl) == 0) return(NULL)
       tagList(
-        tags$h4("Categorical variables — counts & levels"),
+        tags$h4("Categorical variables – counts & levels"),
         div(class = "centered-table", tableOutput("summary_stats_categorical")),
         div(class = "dl-row no-print", downloadButton("download_stats_categorical", "Download categorical stats"))
       )
@@ -726,7 +726,7 @@ my_server <- function(
       tbl <- date_stats()
       if (is.null(tbl) || nrow(tbl) == 0) return(NULL)
       tagList(
-        tags$h4("Date/time variables — range"),
+        tags$h4("Date/time variables – range"),
         div(class = "centered-table", tableOutput("summary_stats_dates")),
         div(class = "dl-row no-print", downloadButton("download_stats_dates", "Download date/time stats"))
       )
@@ -1726,7 +1726,7 @@ my_server <- function(
       tags$div(
         style = "margin:8px 0; padding:10px 12px; border:1px solid #ffe08a; background:#fff7df; border-radius:6px;",
         tags$b("Select exactly two groups"),
-        tags$span(" — please choose two groups in the sidebar to run the test.")
+        tags$span(" – please choose two groups in the sidebar to run the test.")
       )
     })
     
@@ -2013,7 +2013,7 @@ my_server <- function(
       data.frame(
         `Cliff's delta (δ)` = round(delta, 3),
         `Magnitude` = describe_cliffs(delta),
-        `Direction` = if (is.na(delta)) "—"
+        `Direction` = if (is.na(delta)) "–"
         else if (delta > 0) paste0(lvs[1], " > ", lvs[2])
         else if (delta < 0) paste0(lvs[1], " < ", lvs[2])
         else "no difference",
@@ -2030,7 +2030,7 @@ my_server <- function(
     
     # Robust interpretation (blank until ready; no errors on ties/NAs)
     output$mw_interpretation <- renderUI({
-      # 1) hard guard — render nothing until inputs/data truly ready
+      # 1) hard guard – render nothing until inputs/data truly ready
       if (!isTRUE(try(mw_ready(), silent = TRUE))) return(NULL)
       
       # 2) safely get local data without throwing validation messages
@@ -2548,7 +2548,7 @@ my_server <- function(
         tags$div(
           style = "margin:8px 0; padding:10px 12px; border:1px solid #ffe08a; background:#fff7df; border-radius:6px;",
           tags$b("Select at least two groups"),
-          tags$span(" — please choose two or more groups in the sidebar to run ANOVA.")
+          tags$span(" – please choose two or more groups in the sidebar to run ANOVA.")
         )
       } else {
         NULL

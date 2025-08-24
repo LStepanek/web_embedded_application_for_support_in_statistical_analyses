@@ -43,6 +43,32 @@ td.missing-cell {
   font-weight: bold;
 }
 
+
+/* intro box styling for informational sections in the UI */
+.intro-box {
+  margin: 8px 0 14px;
+  padding: 12px 14px;
+  border: 1px solid #cfe2ff;
+  background: #f0f7ff;
+  border-radius: 8px;
+}
+
+.intro-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.intro-lead {
+  margin: 0 0 6px;
+}
+
+.intro-note {
+  margin: 8px 0 0;
+  font-size: 90%;
+  color: #0b5394;
+}
+
+
 #panel-footer {
   font-size: 1em;
   position: fixed;
