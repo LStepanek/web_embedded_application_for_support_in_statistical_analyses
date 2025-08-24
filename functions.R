@@ -56,8 +56,19 @@ register_sysinfo_outputs <- function(output) {
     }
     
     # Detect logical and physical cores
-    cores_logical  <- parallel::detectCores(logical = TRUE)
-    cores_physical <- parallel::detectCores(logical = FALSE)
+    cores_logical <- parallel::detectCores(logical = TRUE)
+    
+    get_physical_cores <- function() {
+      sys <- Sys.info()[["sysname"]]
+      if (sys == "Linux") {
+        uniq <- system("grep 'core id' /proc/cpuinfo | sort -u | wc -l", intern = TRUE)
+        as.integer(uniq)
+      } else {
+        parallel::detectCores(logical = FALSE)
+      }
+    }
+    
+    cores_physical <- get_physical_cores()
     
     # Collect system information into a named list
     sysinfo <- list(
