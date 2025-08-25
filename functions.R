@@ -90,6 +90,17 @@ register_sysinfo_outputs <- function(output) {
 }
 
 
+## Reusable helper for a nice banner
+intro_box <- function(title, lead, bullets = NULL, note = NULL) {
+  tags$div(
+    class = "intro-box",
+    tags$div(class = "intro-title", title),
+    tags$p(class = "intro-lead", lead),
+    if (!is.null(bullets)) tags$ul(lapply(bullets, function(b) tags$li(b))),
+    if (!is.null(note)) tags$p(class = "intro-note", note)
+  )
+}
+
 ## ----------------------------------------------------------------------------
 
 ###############################################################################

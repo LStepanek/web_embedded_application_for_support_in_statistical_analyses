@@ -2,7 +2,7 @@
 ###############################################################################
 ###############################################################################
 
-## paired Wilcoxon test tab ---------------------------------------------------
+## Paired Wilcoxon test tab ---------------------------------------------------
 
 tab_paired_wilcoxon <- tabPanel(
   title = "Paired Wilcoxon test",
@@ -26,7 +26,7 @@ tab_paired_wilcoxon <- tabPanel(
       )
     ),
     mainPanel(
-	  uiOutput("pwx_intro"),
+      uiOutput("pwx_intro"),
 
       uiOutput("pwx_h0_statement"),
       tableOutput("pwx_result"),

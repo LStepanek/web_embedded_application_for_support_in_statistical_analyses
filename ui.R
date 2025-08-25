@@ -151,7 +151,7 @@ my_ui <- shinyUI(
                 tab_flowchart,
 
                 ## the third tab ---------------------------------------------
-                tab_upload,
+                tab_data_upload,
 
                 ## the fourth tab --------------------------------------------
                 tab_ai_insight,
