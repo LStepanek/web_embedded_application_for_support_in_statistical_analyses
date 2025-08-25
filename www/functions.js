@@ -45,7 +45,7 @@ function getSelectedDataTypes() {
     // Process the value: take the first character and convert to uppercase
     if (rawValue && rawValue.charAt) {
       var firstLetter = rawValue.charAt(0).toUpperCase();
-      if (/^[INLSCDP]$/.test(firstLetter)) {
+      if (/^[INLCDP]$/.test(firstLetter)) {
         dataTypes += firstLetter;
       }
     }

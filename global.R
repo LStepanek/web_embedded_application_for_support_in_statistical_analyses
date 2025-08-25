@@ -4,7 +4,7 @@
 
 SAMPLE_DATASETS_DIR <- "datasets"
 ALLOWED_DATA_FILES  <- c(".csv", ".json", ".txt", ".tsv", ".xls", ".xlsx")
-DATA_TYPE_OPTIONS <- c("integer", "numeric", "logical", "string", "character", "date", "POSIXct")
+DATA_TYPE_OPTIONS <- c("integer", "numeric", "logical", "character", "date", "POSIXct")
 
 
 ## error and warning handling -------------------------------------------------

@@ -104,7 +104,6 @@ dataUploadServer <- function(input, output, session, my_data) {
                  "I" = as.integer(col),
                  "N" = as.numeric(col),
                  "L" = as.logical(col),
-                 "S" = as.character(col),
                  "C" = as.character(col),
                  "D" = as.Date(col),
                  "P" = as.POSIXct(col),
