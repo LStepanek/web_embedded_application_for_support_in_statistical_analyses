@@ -90,21 +90,6 @@ method_anovaServer <- function(input, output, session, my_data) {
     data.frame(y = y, group = g)
   })
 
-  ## Notice if invalid selection
-  output$anova_selection_notice <- renderUI({
-    # show a banner if selection is missing OR has < 2 groups
-    sels <- input$anova_selected_levels
-    if (is.null(sels) || length(sels) < 2) {
-      tags$div(
-        class = "alert alert-warning",
-        tags$b("Select at least two groups"),
-        tags$span(" – please choose two or more groups in the sidebar to run ANOVA.")
-      )
-    } else {
-      NULL
-    }
-  })
-
   ## H0/H1 statement
   output$anova_h0_statement <- renderUI({
     req(input$anova_num_var, input$anova_group_var)
@@ -356,6 +341,34 @@ method_anovaServer <- function(input, output, session, my_data) {
       geom_density(alpha = 0.4, adjust = 1) +
       labs(title = "Kernel density by group", x = input$anova_num_var, y = "Density")
   })
+  
+  ## Notice if invalid selection
+  output$anova_selection_notice <- renderUI({
+      # 1) Wait until data & inputs are available (no banner before that)
+      df <- my_data()
+      if (is.null(df) || !is.data.frame(df) || nrow(df) == 0) return(NULL)
+      if (is.null(input$anova_num_var) || is.null(input$anova_group_var)) return(NULL)
+
+      # 2) If the group-levels selector hasn't been rendered yet, don't show anything
+      if (is.null(input$anova_selected_levels)) return(NULL)
+
+      # 3) Make sure inputs point to real columns and levels exist
+      if (!(input$anova_num_var %in% names(df)) || !(input$anova_group_var %in% names(df))) return(NULL)
+      g <- try(as.factor(df[[input$anova_group_var]]), silent = TRUE)
+      if (inherits(g, "try-error")) return(NULL)
+      if (!all(input$anova_selected_levels %in% levels(g))) return(NULL)
+
+      # 4) Now, and only now, show the notice if too few groups are selected
+      if (length(input$anova_selected_levels) < 2) {
+        tags$div(
+          style = "margin:8px 0; padding:10px 12px; border:1px solid #ffe08a; background:#fff7df; border-radius:6px;",
+          tags$b("Select at least two groups"),
+          tags$span(" – please choose two or more groups in the sidebar to run ANOVA.")
+        )
+      } else {
+        NULL
+      }
+    })
 
 }
 
