@@ -95,6 +95,25 @@ dataUploadServer <- function(input, output, session, my_data) {
         # disablovat volbu pro řešení missingů
       }
 
+
+      # Convert columns in a data frame according to specified type codes. Each character in 
+      # 'col_types'  corresponds to a column in 'data' and determines the conversion applied
+      if (length(strsplit(col_types, "")[[1]]) == ncol(data)) {
+        data <- mapply(function(col, type) {
+          switch(type,
+                 "I" = as.integer(col),
+                 "N" = as.numeric(col),
+                 "L" = as.logical(col),
+                 "S" = as.character(col),
+                 "C" = as.character(col),
+                 "D" = as.Date(col),
+                 "P" = as.POSIXct(col),
+                 col)
+        }, data, strsplit(col_types, "")[[1]], SIMPLIFY = FALSE)
+        data <- as.data.frame(data)
+      }
+
+
       if (!quiet) toastr_success(sprintf("The %s loaded successfully!", source_type_str))
       session$sendCustomMessage("setNavbarItemsState", TRUE)
 
