@@ -89,7 +89,7 @@ my_server <- function(
   # Each function handles the reactive and output logic for a specific tab or statistical method
 
   aboutServer(input, output, session)
-  ai_insightServer(input, output, session, my_data)
+  aiInsightServer(input, output, session, my_data)
   dataUploadServer(input, output, session, my_data)
   flowchartServer(input, output, session)
   method_anovaServer(input, output, session, my_data)

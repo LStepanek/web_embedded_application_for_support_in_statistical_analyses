@@ -4,7 +4,7 @@
 
 ## ===== Server module: AI insight ============================================
 
-ai_insightServer <- function(input, output, session, my_data) {
+aiInsightServer <- function(input, output, session, my_data) {
 
   observeEvent(input$my_navbar_page_set, ignoreInit = TRUE, {
     req(my_data())
