@@ -38,7 +38,7 @@ tab_anova <- tabPanel(
 
       uiOutput("anova_label_assumptions"),
       tableOutput("anova_shapiro_resid"),
-      tableOutput("anova_shapiro_groups"),
+      #tableOutput("anova_shapiro_groups"),
       tableOutput("anova_bartlett"),
       tableOutput("anova_levene"),
 

@@ -181,43 +181,144 @@ method_anovaServer <- function(input, output, session, my_data) {
                Note = "", check.names = FALSE)
   })
 
-  # Optional: Shapiro per group (exploratory)
-  output$anova_shapiro_groups <- renderTable({
-    req(anova_ready(), cancelOutput = TRUE)
-    df_loc <- anova_local()
-    lvs <- levels(df_loc$group)
-    res <- lapply(lvs, function(L) {
-      x <- df_loc$y[df_loc$group == L]
-      if (sum(is.finite(x)) < 3) c(W = NA_real_, `p-value` = NA_real_, Note = "n<3")
-      else if (sum(is.finite(x)) > 5000) c(W = NA_real_, `p-value` = NA_real_, Note = "n>5000")
-      else { s <- stats::shapiro.test(x); c(W = round(unname(s$statistic),3), `p-value` = signif(s$p.value,4), Note = "") }
+    # Optional: Shapiro per group (exploratory) — silent until applicable
+    # output$anova_shapiro_groups <- renderTable({
+      # tryCatch({
+        # req(anova_ready(), cancelOutput = TRUE)
+
+        # df_loc <- anova_local()
+        # # keep complete cases only
+        # df_loc <- df_loc[is.finite(df_loc$y) & !is.na(df_loc$group), , drop = FALSE]
+        # if (nrow(df_loc) < 3) return(NULL)
+
+        # g <- droplevels(df_loc$group)
+        # if (nlevels(g) < 1) return(NULL)
+        # lvs <- levels(g)
+
+        # rows <- lapply(lvs, function(L) {
+          # x <- df_loc$y[g == L]
+          # x <- x[is.finite(x)]
+          # n <- length(x)
+
+          # if (n < 3) {
+            # return(data.frame(Group = L, W = NA_real_, `p-value` = NA_real_, Note = "n < 3",
+                              # check.names = FALSE))
+          # }
+          # if (n > 5000) {
+            # return(data.frame(Group = L, W = NA_real_, `p-value` = NA_real_, Note = "n > 5000",
+                              # check.names = FALSE))
+          # }
+          # # constant values -> Shapiro is undefined
+          # rng <- range(x)
+          # if (!is.finite(rng[1]) || !is.finite(rng[2]) || (rng[2] - rng[1] == 0)) {
+            # return(data.frame(Group = L, W = NA_real_, `p-value` = NA_real_, Note = "constant values",
+                              # check.names = FALSE))
+          # }
+
+          # s <- try(stats::shapiro.test(x), silent = TRUE)
+          # if (inherits(s, "try-error")) {
+            # return(data.frame(Group = L, W = NA_real_, `p-value` = NA_real_, Note = "not computed",
+                              # check.names = FALSE))
+          # }
+
+          # data.frame(
+            # Group    = L,
+            # W        = round(unname(s$statistic), 3),
+            # `p-value`= signif(s$p.value, 4),
+            # Note     = "",
+            # check.names = FALSE
+          # )
+        # })
+
+        # out <- do.call(rbind, rows)
+
+        # # If no group produced a computable result, hide the table
+        # computable <- is.finite(out$W) & is.finite(out$`p-value`)
+        # if (!any(computable, na.rm = TRUE)) return(NULL)
+
+        # # Otherwise show the table (including rows with notes for transparency)
+        # out
+      # }, error = function(e) {
+        # NULL  # hide on any unexpected error
+      # })
+    # })
+
+  # Homogeneity: Bartlett (base) — silent until truly applicable
+    output$anova_bartlett <- renderTable({
+      tryCatch({
+        req(anova_ready(), cancelOutput = TRUE)
+
+        df_loc <- anova_local()
+        # keep complete rows
+        df_loc <- df_loc[is.finite(df_loc$y) & !is.na(df_loc$group), , drop = FALSE]
+        if (nrow(df_loc) < 3) return(NULL)
+
+        # need ≥2 groups with n ≥ 2 AND non-zero variance
+        by_stats <- tapply(df_loc$y, droplevels(df_loc$group), function(x) {
+          c(n = sum(is.finite(x)), var = stats::var(x, na.rm = TRUE))
+        })
+        by_stats <- do.call(rbind, by_stats)
+
+        if (is.null(by_stats)) return(NULL)
+        if (sum(by_stats[, "n"] >= 2, na.rm = TRUE) < 2) return(NULL)
+        if (sum(by_stats[, "var"] > 0,  na.rm = TRUE) < 2) return(NULL)
+
+        bt <- suppressWarnings(stats::bartlett.test(y ~ group, data = df_loc))
+        if (inherits(bt, "htest")) {
+          data.frame(
+            `Bartlett K-squared` = round(unname(bt$statistic), 3),
+            df                   = unname(bt$parameter),
+            `p-value`            = signif(bt$p.value, 4),
+            check.names = FALSE
+          )
+        } else {
+          NULL
+        }
+      }, error = function(e) {
+        # Hide output on any error
+        NULL
+      })
     })
-    df <- do.call(rbind, res)
-    data.frame(Group = lvs, df, check.names = FALSE, row.names = NULL)
-  })
 
-  # Homogeneity: Bartlett (base)
-  output$anova_bartlett <- renderTable({
-    req(anova_ready(), cancelOutput = TRUE)
-    df_loc <- anova_local()
-    bt <- try(stats::bartlett.test(y ~ group, data = df_loc), silent = TRUE)
-    if (inherits(bt, "try-error")) return(NULL)
-    data.frame(
-      `Bartlett K-squared` = round(unname(bt$statistic), 3),
-      df = unname(bt$parameter),
-      `p-value` = signif(bt$p.value, 4),
-      check.names = FALSE
-    )
-  })
+  # Homogeneity: Levene (if car is available) — silent until truly applicable
+    output$anova_levene <- renderTable({
+      tryCatch({
+        req(anova_ready(), cancelOutput = TRUE)
+        if (!requireNamespace("car", quietly = TRUE)) return(NULL)
 
-  # Homogeneity: Levene (if car is available)
-  output$anova_levene <- renderTable({
-    req(anova_ready(), cancelOutput = TRUE)
-    if (!requireNamespace("car", quietly = TRUE)) return(NULL)
-    df_loc <- anova_local()
-    lv <- car::leveneTest(y ~ group, data = df_loc, center = median)
-    as.data.frame(lv, stringsAsFactors = FALSE, check.names = FALSE)
-  })
+        df_loc <- anova_local()
+        # keep complete rows only
+        df_loc <- df_loc[is.finite(df_loc$y) & !is.na(df_loc$group), , drop = FALSE]
+        if (nrow(df_loc) < 3) return(NULL)
+
+        g <- droplevels(df_loc$group)
+        if (nlevels(g) < 2) return(NULL)
+
+        # need residual df > 0: total non-missing > number of groups
+        if (sum(is.finite(df_loc$y)) <= nlevels(g)) return(NULL)
+
+        # check that deviations are not all zero (otherwise F is undefined)
+        med_by_group <- tapply(df_loc$y, g, stats::median, na.rm = TRUE)
+        dev <- abs(df_loc$y - med_by_group[as.integer(g)])
+        if (all(!is.finite(dev)) || all(dev == 0, na.rm = TRUE)) return(NULL)
+
+        # run Levene (center = median), suppress harmless warnings
+        lv <- suppressWarnings(car::leveneTest(y ~ g,
+          data = data.frame(y = df_loc$y, g = g),
+          center = median
+        ))
+
+        dflv <- as.data.frame(lv, stringsAsFactors = FALSE, check.names = FALSE)
+        # add a 'Term' column for readability
+        if (!is.null(rownames(dflv))) {
+          dflv <- cbind(Term = rownames(dflv), dflv, row.names = NULL, check.names = FALSE)
+        }
+        dflv
+      }, error = function(e) {
+        # Hide output on any error
+        NULL
+      })
+    })
 
   ## Effect size (eta-squared)
   output$anova_label_effectsize <- renderUI({ req(anova_ready(), cancelOutput = TRUE); tags$h2("Effect size (eta-squared)") })
