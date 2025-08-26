@@ -94,7 +94,7 @@ my_ui <- shinyUI(
                           <font size="3">Statistical tools</font>
 
                           <!-- application version -->
-                          &nbsp; | &nbsp; version 0.0.1 &nbsp; | &nbsp;
+                          &nbsp; | &nbsp; version '), APP_VERSION, HTML(' &nbsp; | &nbsp;
 
                           <!-- licence and its logo -->
                           <a
