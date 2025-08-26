@@ -72,15 +72,55 @@ method_mannWhitneyServer <- function(input, output, session, my_data) {
   }
 
   ## populate selectors
-  observe({
-    df <- my_data(); req(df)
-    shiny::validate(need(ncol(df) > 0, "No columns in uploaded data."))
-    isolate({
-      numeric_vars <- names(df)[sapply(df, is.numeric)]
-      updateSelectInput(session, "mw_num_var", choices = numeric_vars)
-      updateSelectInput(session, "mw_group_var", choices = names(df))
+  # Populate selectors with mutual exclusion (numeric != grouping)
+    observe({
+      df <- my_data(); req(df)
+      shiny::validate(need(ncol(df) > 0, "No columns in uploaded data."))
+
+      isolate({
+        numeric_vars <- names(df)[sapply(df, is.numeric)]
+
+        # pick/keep a valid numeric selection
+        sel_num <- input$mw_num_var
+        if (is.null(sel_num) || !(sel_num %in% numeric_vars)) {
+          sel_num <- if (length(numeric_vars)) numeric_vars[1] else NULL
+        }
+        updateSelectInput(session, "mw_num_var", choices = numeric_vars, selected = sel_num)
+
+        # grouping choices exclude the selected numeric variable
+        group_candidates <- setdiff(names(df), sel_num)
+        sel_group <- input$mw_group_var
+        if (is.null(sel_group) || !(sel_group %in% group_candidates)) {
+          sel_group <- if (length(group_candidates)) group_candidates[1] else NULL
+        }
+        updateSelectInput(session, "mw_group_var", choices = group_candidates, selected = sel_group)
+      })
     })
-  })
+    
+    # If numeric changes, drop it from grouping choices
+    observeEvent(input$mw_num_var, {
+      df <- my_data(); req(df)
+      group_choices <- setdiff(names(df), input$mw_num_var)
+      sel_group <- if (!is.null(input$mw_group_var) && input$mw_group_var %in% group_choices) {
+        input$mw_group_var
+      } else {
+        if (length(group_choices)) group_choices[1] else NULL
+      }
+      updateSelectInput(session, "mw_group_var", choices = group_choices, selected = sel_group)
+    }, ignoreInit = TRUE, priority = 100)
+
+    # If grouping changes, exclude it from numeric choices (when that column is numeric)
+    observeEvent(input$mw_group_var, {
+      df <- my_data(); req(df)
+      numeric_vars <- names(df)[sapply(df, is.numeric)]
+      num_choices  <- setdiff(numeric_vars, input$mw_group_var)
+      sel_num <- if (!is.null(input$mw_num_var) && input$mw_num_var %in% num_choices) {
+        input$mw_num_var
+      } else {
+        if (length(num_choices)) num_choices[1] else NULL
+      }
+      updateSelectInput(session, "mw_num_var", choices = num_choices, selected = sel_num)
+    }, ignoreInit = TRUE, priority = 100)
 
   ## group levels picker
   output$mw_group_levels_ui <- renderUI({
