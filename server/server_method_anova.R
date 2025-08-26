@@ -505,7 +505,7 @@ method_anovaServer <- function(input, output, session, my_data) {
       # 4) Now, and only now, show the notice if too few groups are selected
       if (length(input$anova_selected_levels) < 2) {
         tags$div(
-          style = "margin:8px 0; padding:10px 12px; border:1px solid #ffe08a; background:#fff7df; border-radius:6px;",
+          class = "alert alert-warning",
           tags$b("Select at least two groups"),
           tags$span(" – please choose two or more groups in the sidebar to run ANOVA.")
         )
