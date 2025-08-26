@@ -14,11 +14,11 @@ tab_anova <- tabPanel(
         condition = "output.data_ready == true",
         selectInput("anova_num_var",   "Select numeric variable:", choices = NULL),
         selectInput("anova_group_var", "Select grouping variable:", choices = NULL),
-        uiOutput("anova_group_levels_ui"),
-        selectInput(
-          "anova_alt", "Alternative hypothesis:",
-          choices = c("two.sided"), selected = "two.sided"  # ANOVA uses two-sided F
-        )
+        uiOutput("anova_group_levels_ui")#,
+        #selectInput(
+        #  "anova_alt", "Alternative hypothesis:",
+        #  choices = c("two.sided"), selected = "two.sided"  # ANOVA uses two-sided F
+        #)
       )
     ),
     mainPanel(
