@@ -21,15 +21,55 @@ method_anovaServer <- function(input, output, session, my_data) {
   })
 
 
-  ## Populate selectors
-  observe({
-    df <- my_data(); req(df); shiny::validate(need(ncol(df) > 0, "No columns in uploaded data."))
-    isolate({
-      numeric_vars <- names(df)[sapply(df, is.numeric)]
-      updateSelectInput(session, "anova_num_var", choices = numeric_vars)
-      updateSelectInput(session, "anova_group_var", choices = names(df))
+  ## Populate selectors (mutually exclusive: numeric != grouping)
+    observe({
+      df <- my_data(); req(df)
+      shiny::validate(need(ncol(df) > 0, "No columns in uploaded data."))
+
+      isolate({
+        numeric_vars <- names(df)[sapply(df, is.numeric)]
+
+        # keep/choose a valid numeric
+        sel_num <- input$anova_num_var
+        if (is.null(sel_num) || !(sel_num %in% numeric_vars)) {
+          sel_num <- if (length(numeric_vars)) numeric_vars[1] else NULL
+        }
+        updateSelectInput(session, "anova_num_var", choices = numeric_vars, selected = sel_num)
+
+        # group choices exclude the selected numeric
+        group_candidates <- setdiff(names(df), sel_num)
+        sel_group <- input$anova_group_var
+        if (is.null(sel_group) || !(sel_group %in% group_candidates)) {
+          sel_group <- if (length(group_candidates)) group_candidates[1] else NULL
+        }
+        updateSelectInput(session, "anova_group_var", choices = group_candidates, selected = sel_group)
+      })
     })
-  })
+    
+  # If numeric changes, remove it from grouping choices
+    observeEvent(input$anova_num_var, {
+      df <- my_data(); req(df)
+      group_choices <- setdiff(names(df), input$anova_num_var)
+      sel_group <- if (!is.null(input$anova_group_var) && input$anova_group_var %in% group_choices) {
+        input$anova_group_var
+      } else {
+        if (length(group_choices)) group_choices[1] else NULL
+      }
+      updateSelectInput(session, "anova_group_var", choices = group_choices, selected = sel_group)
+    }, ignoreInit = TRUE, priority = 100)
+
+    # If grouping changes, exclude it from numeric choices (when that column is numeric)
+    observeEvent(input$anova_group_var, {
+      df <- my_data(); req(df)
+      numeric_vars <- names(df)[sapply(df, is.numeric)]
+      num_choices  <- setdiff(numeric_vars, input$anova_group_var)
+      sel_num <- if (!is.null(input$anova_num_var) && input$anova_num_var %in% num_choices) {
+        input$anova_num_var
+      } else {
+        if (length(num_choices)) num_choices[1] else NULL
+      }
+      updateSelectInput(session, "anova_num_var", choices = num_choices, selected = sel_num)
+    }, ignoreInit = TRUE, priority = 100)
 
   ## Group levels picker (allow 2+)
   output$anova_group_levels_ui <- renderUI({
@@ -63,21 +103,24 @@ method_anovaServer <- function(input, output, session, my_data) {
   }
 
   ## Ready check
-  anova_ready <- reactive({
-    df <- my_data()
-    if (is.null(df) || !is.data.frame(df) || nrow(df) == 0) return(FALSE)
-    if (is.null(input$anova_num_var) || is.null(input$anova_group_var) || is.null(input$anova_selected_levels)) return(FALSE)
-    if (!(input$anova_num_var %in% names(df)) || !(input$anova_group_var %in% names(df))) return(FALSE)
-    y <- df[[input$anova_num_var]]; g <- as.factor(df[[input$anova_group_var]])
-    if (!is.numeric(y)) return(FALSE)
-    if (length(input$anova_selected_levels) < 2) return(FALSE)
-    if (!all(input$anova_selected_levels %in% levels(g))) return(FALSE)
-    idx <- g %in% input$anova_selected_levels
-    y <- y[idx]; g <- factor(g[idx], levels = input$anova_selected_levels)
-    # need at least 2 total df: total N > number of groups
-    if (sum(is.finite(y)) <= nlevels(g)) return(FALSE)
-    TRUE
-  })
+    anova_ready <- reactive({
+      df <- my_data()
+      if (is.null(df) || !is.data.frame(df) || nrow(df) == 0) return(FALSE)
+      if (is.null(input$anova_num_var) || is.null(input$anova_group_var) || is.null(input$anova_selected_levels)) return(FALSE)
+      if (!(input$anova_num_var %in% names(df)) || !(input$anova_group_var %in% names(df))) return(FALSE)
+
+      # NEW: numeric and grouping cannot be the same column
+      if (identical(input$anova_num_var, input$anova_group_var)) return(FALSE)
+
+      y <- df[[input$anova_num_var]]; g <- as.factor(df[[input$anova_group_var]])
+      if (!is.numeric(y)) return(FALSE)
+      if (length(input$anova_selected_levels) < 2) return(FALSE)
+      if (!all(input$anova_selected_levels %in% levels(g))) return(FALSE)
+      idx <- g %in% input$anova_selected_levels
+      y <- y[idx]; g <- factor(g[idx], levels = input$anova_selected_levels)
+      if (sum(is.finite(y)) <= nlevels(g)) return(FALSE)  # residual df > 0
+      TRUE
+    })
 
   ## Local filtered data
   anova_local <- reactive({
@@ -462,7 +505,7 @@ method_anovaServer <- function(input, output, session, my_data) {
       # 4) Now, and only now, show the notice if too few groups are selected
       if (length(input$anova_selected_levels) < 2) {
         tags$div(
-          class = "alert alert-warning",
+          style = "margin:8px 0; padding:10px 12px; border:1px solid #ffe08a; background:#fff7df; border-radius:6px;",
           tags$b("Select at least two groups"),
           tags$span(" – please choose two or more groups in the sidebar to run ANOVA.")
         )
