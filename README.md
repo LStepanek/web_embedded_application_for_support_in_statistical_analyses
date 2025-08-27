@@ -7,6 +7,9 @@ A stable version of the application is available at <a href="http://92.62.235.37
 
 `EDIT (February 22, 2025): -- the project is worked out by Lubomir Stepanek, Michal Seda, and Milan Cizek`
 
+`EDIT (August 27, 2025): -- starting April 2025 till present day, the project is worked out by Lubomir Stepanek and Milan Cizek`
+
+
 <p align="center">
 <a href = "https://prf.osu.eu/" target = "_blank">
     <img
