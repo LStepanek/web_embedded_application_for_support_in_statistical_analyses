@@ -1,6 +1,6 @@
 # Web-embedded application for support in statistical analyses
 
-This repository hosts a web-embedded application for supporting statistical analyses, developed as part of the KIP/XRPR1 Team Project 1 course.
+This repository hosts a web-embedded application for supporting statistical analyses, developed as part of the KIP/XRPR1-2 Team Project 1-2 course.
 A stable version of the application is available at <a href="http://92.62.235.37/" target="_blank">http://92.62.235.37/</a>, a developer version of the application is available at <a href="http://92.62.235.37:81/" target="_blank">http://92.62.235.37:81/</a>.
 
 `EDIT (November 23, 2024): -- the project is worked out by Lubomir Stepanek and Michal Seda`
